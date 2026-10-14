@@ -1,0 +1,27 @@
+# bootstrap 克隆的上游（不入库）
+rt-thread/
+
+# 构建产物
+build/
+*.o
+*.o.d
+*.elf
+*.axf
+*.hex
+*.bin
+*.map
+.sconsign.dblite
+__pycache__/
+*.pyc
+
+# 上位机（Tauri）
+node_modules/
+dist/
+src-tauri/target/
+# 由 sync-points 生成的点表副本（真源是 tools/points.json）
+**/src/lib/points.json
+
+# 系统
+.DS_Store
+Thumbs.db
+*Zone.Identifier

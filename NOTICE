@@ -1,0 +1,35 @@
+GD32H759 + RT-Thread 工控实战
+Copyright (c) 2026 <your name>
+
+This product includes software developed by the RT-Thread Development Team,
+and modifies a small number of its files. Those files remain under the
+Apache License 2.0; the modifications are published as a patch:
+
+  RT-Thread
+    Copyright (c) 2006-2024, RT-Thread Development Team
+    Licensed under the Apache License, Version 2.0
+    Upstream:     https://github.com/RT-Thread/rt-thread
+    Base version: v5.2.2 (commit ddf52e2cdd977f14fc04035c88672ac204aec713)
+    Modifications: see patches/upstream-v5.2.2.patch, covering:
+      - src/Kconfig
+      - components/drivers/serial/dev_serial.c
+      - components/drivers/sdio/Kconfig
+      - components/drivers/sdio/dev_mmcsd_core.c
+      - components/drivers/sdio/dev_sd.c
+      - components/drivers/usb/cherryusb/core/usbd_core.c
+      - components/drivers/usb/cherryusb/demo/cdc_acm_rttchardev_template.c
+      - components/drivers/usb/cherryusb/port/dwc2/usb_dc_dwc2.c
+      - components/drivers/usb/cherryusb/port/dwc2/usb_dwc2_param.h
+      - components/drivers/usb/cherryusb/port/dwc2/usb_glue_gd.c
+      - bsp/gd32/arm/gd32h759i-eval/.config
+      - bsp/gd32/arm/gd32h759i-eval/rtconfig.h
+      - bsp/gd32/arm/gd32h759i-eval/board/Kconfig
+      - bsp/gd32/arm/gd32h759i-eval/applications/main.c
+      - bsp/gd32/arm/libraries/gd32_drivers/SConscript
+      - bsp/gd32/arm/libraries/gd32_drivers/drv_can.c
+      - bsp/gd32/arm/libraries/gd32_drivers/drv_gpio.c
+
+Third-party components NOT included in this repository (fetched via the
+RT-Thread package manager, governed by their own licenses):
+
+  - GD32H7xx standard peripheral library / CMSIS (GigaDevice / ARM)

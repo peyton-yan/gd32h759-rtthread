@@ -1,0 +1,42 @@
+#
+# hal_supplement/SConscript — GD32 标准外设库的 BSP 侧补充（受 git 管理）
+#
+# 背景：pkgs 把 GD32 标准外设库 clone 到 libraries/gd32-arm-series-latest
+# （独立 git 仓库，不在本工程 git 之下、不便打补丁）。原先直接改包内
+# GD32H7xx/SConscript 补入 dci/ospi/ospim/timer/trigsel/hpdf 六个外设源文件；
+# 该文件现已还原，六个源文件搬进本目录随 BSP 一起管理：
+#   - dci/ospi/ospim/timer/trigsel：从包内同版本 == 复制
+#   - hpdf：升级为 GigaDevice V1.4.0（包内为 V1.2.0，头文件 API 相同）
+# 迁移记录见 migrated-from-pkg.patch
+#
+import os
+from building import *
+
+cwd = GetCurrentDir()                                          # <bsp>/board/hal_supplement
+ARM = os.path.abspath(os.path.join(cwd, '..', '..', '..'))     # bsp/gd32/arm
+
+# 包内 HAL 头文件路径（其 Include 目录不随源码搬动）
+HAL_INC = os.path.join(ARM, 'libraries', 'gd32-arm-series-latest',
+                       'GD32H7xx', 'GD32H7xx_standard_peripheral', 'Include')
+path = [HAL_INC] if os.path.isdir(HAL_INC) else []
+
+src = [
+    'gd32h7xx_dci.c',
+    'gd32h7xx_ospi.c',
+    'gd32h7xx_ospim.c',
+]
+
+if GetDepend(['RT_USING_HWTIMER']) or GetDepend(['RT_USING_ADC']) or GetDepend(['RT_USING_DAC']):
+    src += ['gd32h7xx_timer.c']
+
+if GetDepend(['RT_USING_ADC']) or GetDepend(['RT_USING_DAC']):
+    src += ['gd32h7xx_trigsel.c']
+
+if GetDepend(['BSP_USING_HPDF']):
+    src += ['gd32h7xx_hpdf.c']
+
+group = DefineGroup('HAL_Supplement', src,
+                    depend=['SOC_SERIES_GD32H7xx'],
+                    CPPPATH=path)
+
+Return('group')

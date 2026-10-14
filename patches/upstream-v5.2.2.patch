@@ -1,0 +1,2068 @@
+diff --git a/bsp/gd32/arm/gd32h759i-eval/.config b/bsp/gd32/arm/gd32h759i-eval/.config
+index 79c32576af..67f6a626de 100644
+--- a/bsp/gd32/arm/gd32h759i-eval/.config
++++ b/bsp/gd32/arm/gd32h759i-eval/.config
+@@ -125,10 +125,10 @@ CONFIG_RT_HOOK_USING_FUNC_PTR=y
+ # CONFIG_RT_USING_HOOKLIST is not set
+ CONFIG_RT_USING_IDLE_HOOK=y
+ CONFIG_RT_IDLE_HOOK_LIST_SIZE=4
+-CONFIG_IDLE_THREAD_STACK_SIZE=256
++CONFIG_IDLE_THREAD_STACK_SIZE=2048
+ CONFIG_RT_USING_TIMER_SOFT=y
+ CONFIG_RT_TIMER_THREAD_PRIO=4
+-CONFIG_RT_TIMER_THREAD_STACK_SIZE=512
++CONFIG_RT_TIMER_THREAD_STACK_SIZE=1024
+ # CONFIG_RT_USING_TIMER_ALL_SOFT is not set
+ # CONFIG_RT_USING_CPU_USAGE_TRACER is not set
+ 
+@@ -179,7 +179,7 @@ CONFIG_RT_USING_DEVICE=y
+ # CONFIG_RT_USING_INTERRUPT_INFO is not set
+ # CONFIG_RT_USING_THREADSAFE_PRINTF is not set
+ CONFIG_RT_USING_CONSOLE=y
+-CONFIG_RT_CONSOLEBUF_SIZE=128
++CONFIG_RT_CONSOLEBUF_SIZE=256
+ CONFIG_RT_CONSOLE_DEVICE_NAME="uart0"
+ CONFIG_RT_VER_NUM=0x50201
+ # CONFIG_RT_USING_STDC_ATOMIC is not set
+@@ -226,22 +226,51 @@ CONFIG_FINSH_USING_OPTION_COMPLETION=y
+ CONFIG_RT_USING_DFS=y
+ CONFIG_DFS_USING_POSIX=y
+ CONFIG_DFS_USING_WORKDIR=y
+-# CONFIG_RT_USING_DFS_MNTTABLE is not set
++CONFIG_RT_USING_DFS_MNTTABLE=y
+ CONFIG_DFS_FD_MAX=16
+ CONFIG_RT_USING_DFS_V1=y
+ # CONFIG_RT_USING_DFS_V2 is not set
+ CONFIG_DFS_FILESYSTEMS_MAX=4
+ CONFIG_DFS_FILESYSTEM_TYPES_MAX=4
+-# CONFIG_RT_USING_DFS_ELMFAT is not set
++CONFIG_RT_USING_DFS_ELMFAT=y
++
++#
++# elm-chan's FatFs, Generic FAT Filesystem Module
++#
++CONFIG_RT_DFS_ELM_CODE_PAGE=437
++CONFIG_RT_DFS_ELM_WORD_ACCESS=y
++# CONFIG_RT_DFS_ELM_USE_LFN_0 is not set
++# CONFIG_RT_DFS_ELM_USE_LFN_1 is not set
++# CONFIG_RT_DFS_ELM_USE_LFN_2 is not set
++CONFIG_RT_DFS_ELM_USE_LFN_3=y
++CONFIG_RT_DFS_ELM_USE_LFN=3
++CONFIG_RT_DFS_ELM_LFN_UNICODE_0=y
++# CONFIG_RT_DFS_ELM_LFN_UNICODE_1 is not set
++# CONFIG_RT_DFS_ELM_LFN_UNICODE_2 is not set
++# CONFIG_RT_DFS_ELM_LFN_UNICODE_3 is not set
++CONFIG_RT_DFS_ELM_LFN_UNICODE=0
++CONFIG_RT_DFS_ELM_MAX_LFN=255
++CONFIG_RT_DFS_ELM_DRIVES=2
++CONFIG_RT_DFS_ELM_MAX_SECTOR_SIZE=512
++# CONFIG_RT_DFS_ELM_USE_ERASE is not set
++CONFIG_RT_DFS_ELM_REENTRANT=y
++CONFIG_RT_DFS_ELM_MUTEX_TIMEOUT=3000
++# CONFIG_RT_DFS_ELM_USE_EXFAT is not set
++# end of elm-chan's FatFs, Generic FAT Filesystem Module
++
+ CONFIG_RT_USING_DFS_DEVFS=y
+ # CONFIG_RT_USING_DFS_ROMFS is not set
+ # CONFIG_RT_USING_DFS_CROMFS is not set
+ # CONFIG_RT_USING_DFS_RAMFS is not set
+ # CONFIG_RT_USING_DFS_TMPFS is not set
+ # CONFIG_RT_USING_DFS_MQUEUE is not set
++# CONFIG_RT_USING_DFS_NFS is not set
+ # end of DFS: device virtual file system
+ 
+-# CONFIG_RT_USING_FAL is not set
++CONFIG_RT_USING_FAL=y
++CONFIG_FAL_USING_DEBUG=y
++CONFIG_FAL_PART_HAS_TABLE_CFG=y
++# CONFIG_FAL_USING_SFUD_PORT is not set
+ 
+ #
+ # Device Drivers
+@@ -254,10 +283,17 @@ CONFIG_RT_UNAMED_PIPE_NUMBER=64
+ CONFIG_RT_USING_SERIAL=y
+ CONFIG_RT_USING_SERIAL_V1=y
+ # CONFIG_RT_USING_SERIAL_V2 is not set
+-# CONFIG_RT_SERIAL_USING_DMA is not set
++CONFIG_RT_SERIAL_USING_DMA=y
+ CONFIG_RT_SERIAL_RB_BUFSZ=64
+ # CONFIG_RT_USING_SERIAL_BYPASS is not set
+-# CONFIG_RT_USING_CAN is not set
++CONFIG_RT_USING_CAN=y
++# CONFIG_RT_CAN_USING_HDR is not set
++# CONFIG_RT_CAN_USING_CANFD is not set
++CONFIG_RT_CANMSG_BOX_SZ=16
++CONFIG_RT_CANSND_BOX_NUM=1
++CONFIG_RT_CANSND_MSG_TIMEOUT=100
++CONFIG_RT_CAN_NB_TX_FIFO_SIZE=256
++# CONFIG_RT_CAN_MALLOC_NB_TX_BUFFER is not set
+ # CONFIG_RT_USING_CPUTIME is not set
+ CONFIG_RT_USING_I2C=y
+ # CONFIG_RT_I2C_DEBUG is not set
+@@ -266,20 +302,35 @@ CONFIG_RT_USING_I2C_BITOPS=y
+ # CONFIG_RT_USING_SOFT_I2C is not set
+ # CONFIG_RT_USING_PHY is not set
+ # CONFIG_RT_USING_PHY_V2 is not set
+-# CONFIG_RT_USING_ADC is not set
+-# CONFIG_RT_USING_DAC is not set
++CONFIG_RT_USING_ADC=y
++CONFIG_RT_USING_DAC=y
+ # CONFIG_RT_USING_NULL is not set
+ # CONFIG_RT_USING_ZERO is not set
+ # CONFIG_RT_USING_RANDOM is not set
+ # CONFIG_RT_USING_PWM is not set
+ # CONFIG_RT_USING_PULSE_ENCODER is not set
+ # CONFIG_RT_USING_INPUT_CAPTURE is not set
+-# CONFIG_RT_USING_MTD_NOR is not set
++CONFIG_RT_USING_MTD_NOR=y
+ # CONFIG_RT_USING_MTD_NAND is not set
+ # CONFIG_RT_USING_PM is not set
+-# CONFIG_RT_USING_RTC is not set
+-# CONFIG_RT_USING_SDIO is not set
+-# CONFIG_RT_USING_SPI is not set
++CONFIG_RT_USING_RTC=y
++# CONFIG_RT_USING_ALARM is not set
++# CONFIG_RT_USING_SOFT_RTC is not set
++CONFIG_RT_USING_SDIO=y
++CONFIG_RT_SDIO_STACK_SIZE=1024
++CONFIG_RT_SDIO_THREAD_PRIORITY=15
++CONFIG_RT_MMCSD_STACK_SIZE=4096
++CONFIG_RT_MMCSD_THREAD_PRIORITY=22
++CONFIG_RT_MMCSD_MAX_PARTITION=16
++# CONFIG_RT_SDIO_DEBUG is not set
++# CONFIG_RT_USING_SDHCI is not set
++CONFIG_RT_USING_SPI=y
++# CONFIG_RT_USING_SOFT_SPI is not set
++# CONFIG_RT_USING_QSPI is not set
++# CONFIG_RT_USING_SPI_MSD is not set
++# CONFIG_RT_USING_SFUD is not set
++# CONFIG_RT_USING_ENC28J60 is not set
++# CONFIG_RT_USING_SPI_WIFI is not set
+ # CONFIG_RT_USING_WDT is not set
+ # CONFIG_RT_USING_AUDIO is not set
+ # CONFIG_RT_USING_SENSOR is not set
+@@ -287,12 +338,74 @@ CONFIG_RT_USING_I2C_BITOPS=y
+ # CONFIG_RT_USING_LCD is not set
+ # CONFIG_RT_USING_HWCRYPTO is not set
+ # CONFIG_RT_USING_WIFI is not set
+-# CONFIG_RT_USING_BLK is not set
++CONFIG_RT_USING_BLK=y
++
++#
++# Partition Types
++#
++CONFIG_RT_BLK_PARTITION_DFS=y
++CONFIG_RT_BLK_PARTITION_EFI=y
++# end of Partition Types
++
+ # CONFIG_RT_USING_VIRTIO is not set
+ CONFIG_RT_USING_PIN=y
+ # CONFIG_RT_USING_KTIME is not set
+ # CONFIG_RT_USING_HWTIMER is not set
+-# CONFIG_RT_USING_CHERRYUSB is not set
++CONFIG_RT_USING_CHERRYUSB=y
++CONFIG_RT_CHERRYUSB_DEVICE=y
++CONFIG_RT_CHERRYUSB_DEVICE_SPEED_FS=y
++# CONFIG_RT_CHERRYUSB_DEVICE_SPEED_HS is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_SPEED_AUTO is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_CUSTOM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_FSDEV_ST is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_FSDEV_CUSTOM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_DWC2_ST is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_DWC2_ESP is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_DWC2_KENDRYTE is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_DWC2_AT is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_DWC2_HC is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_DWC2_NATION is not set
++CONFIG_RT_CHERRYUSB_DEVICE_DWC2_GD=y
++# CONFIG_RT_CHERRYUSB_DEVICE_DWC2_CUSTOM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_MUSB_ES is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_MUSB_SUNXI is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_MUSB_BK is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_MUSB_SIFLI is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_MUSB_CUSTOM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_CHIPIDEA_MCX is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_CHIPIDEA_CUSTOM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_KINETIS_MCX is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_KINETIS_MM32 is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_KINETIS_CUSTOM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_BL is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_HPM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_AIC is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_RP2040 is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_CH32 is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_PUSB2 is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_NRF5X is not set
++CONFIG_RT_CHERRYUSB_DEVICE_CDC_ACM=y
++# CONFIG_RT_CHERRYUSB_DEVICE_HID is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_MSC is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_AUDIO is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_VIDEO is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_CDC_RNDIS is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_CDC_ECM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_CDC_NCM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_MTP is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_ADB is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_DFU is not set
++CONFIG_RT_CHERRYUSB_DEVICE_CDC_ACM_CHARDEV=y
++CONFIG_CONFIG_USBDEV_REQUEST_BUFFER_LEN=512
++CONFIG_CONFIG_USBDEV_MSC_MAX_BUFSIZE=512
++# CONFIG_CONFIG_USBDEV_RNDIS_USING_LWIP is not set
++# CONFIG_CONFIG_USBDEV_CDC_ECM_USING_LWIP is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_TEMPLATE_NONE is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_TEMPLATE_CDC_ACM is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_TEMPLATE_WINUSBV1 is not set
++# CONFIG_RT_CHERRYUSB_DEVICE_TEMPLATE_WINUSBV2_CDC is not set
++CONFIG_RT_CHERRYUSB_DEVICE_TEMPLATE_CDC_ACM_CHARDEV=y
++# CONFIG_RT_CHERRYUSB_HOST is not set
+ # end of Device Drivers
+ 
+ #
+@@ -344,8 +457,77 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # Network
+ #
+ # CONFIG_RT_USING_SAL is not set
+-# CONFIG_RT_USING_NETDEV is not set
+-# CONFIG_RT_USING_LWIP is not set
++CONFIG_RT_USING_NETDEV=y
++CONFIG_NETDEV_USING_IFCONFIG=y
++CONFIG_NETDEV_USING_PING=y
++CONFIG_NETDEV_USING_NETSTAT=y
++CONFIG_NETDEV_USING_AUTO_DEFAULT=y
++CONFIG_NETDEV_USING_LINK_STATUS_CALLBACK=y
++# CONFIG_NETDEV_USING_IPV6 is not set
++CONFIG_NETDEV_IPV4=1
++CONFIG_NETDEV_IPV6=0
++CONFIG_RT_USING_LWIP=y
++# CONFIG_RT_USING_LWIP_LOCAL_VERSION is not set
++# CONFIG_RT_USING_LWIP141 is not set
++CONFIG_RT_USING_LWIP203=y
++# CONFIG_RT_USING_LWIP212 is not set
++# CONFIG_RT_USING_LWIP_LATEST is not set
++CONFIG_RT_USING_LWIP_VER_NUM=0x20003
++# CONFIG_RT_USING_LWIP_IPV6 is not set
++CONFIG_RT_LWIP_MEM_ALIGNMENT=4
++CONFIG_RT_LWIP_IGMP=y
++CONFIG_RT_LWIP_ICMP=y
++# CONFIG_RT_LWIP_SNMP is not set
++CONFIG_RT_LWIP_DNS=y
++CONFIG_RT_LWIP_DHCP=y
++CONFIG_IP_SOF_BROADCAST=1
++CONFIG_IP_SOF_BROADCAST_RECV=1
++
++#
++# Static IPv4 Address
++#
++CONFIG_RT_LWIP_IPADDR="192.168.1.30"
++CONFIG_RT_LWIP_GWADDR="192.168.1.1"
++CONFIG_RT_LWIP_MSKADDR="255.255.255.0"
++# end of Static IPv4 Address
++
++CONFIG_RT_LWIP_UDP=y
++CONFIG_RT_LWIP_TCP=y
++CONFIG_RT_LWIP_RAW=y
++# CONFIG_RT_LWIP_PPP is not set
++CONFIG_RT_MEMP_NUM_NETCONN=8
++CONFIG_RT_LWIP_PBUF_NUM=16
++CONFIG_RT_LWIP_RAW_PCB_NUM=4
++CONFIG_RT_LWIP_UDP_PCB_NUM=4
++CONFIG_RT_LWIP_TCP_PCB_NUM=4
++CONFIG_RT_LWIP_TCP_SEG_NUM=40
++CONFIG_RT_LWIP_TCP_SND_BUF=8196
++CONFIG_RT_LWIP_TCP_WND=8196
++CONFIG_RT_LWIP_TCPTHREAD_PRIORITY=10
++CONFIG_RT_LWIP_TCPTHREAD_MBOX_SIZE=8
++CONFIG_RT_LWIP_TCPTHREAD_STACKSIZE=1024
++# CONFIG_LWIP_NO_RX_THREAD is not set
++# CONFIG_LWIP_NO_TX_THREAD is not set
++CONFIG_RT_LWIP_ETHTHREAD_PRIORITY=12
++CONFIG_RT_LWIP_ETHTHREAD_STACKSIZE=1024
++CONFIG_RT_LWIP_ETHTHREAD_MBOX_SIZE=8
++# CONFIG_RT_LWIP_REASSEMBLY_FRAG is not set
++CONFIG_LWIP_NETIF_STATUS_CALLBACK=1
++CONFIG_LWIP_NETIF_LINK_CALLBACK=1
++CONFIG_RT_LWIP_NETIF_NAMESIZE=6
++CONFIG_SO_REUSE=1
++CONFIG_LWIP_SO_RCVTIMEO=1
++CONFIG_LWIP_SO_SNDTIMEO=1
++CONFIG_LWIP_SO_RCVBUF=1
++CONFIG_LWIP_SO_LINGER=0
++# CONFIG_RT_LWIP_NETIF_LOOPBACK is not set
++CONFIG_LWIP_NETIF_LOOPBACK=0
++# CONFIG_RT_LWIP_STATS is not set
++# CONFIG_RT_LWIP_USING_HW_CHECKSUM is not set
++CONFIG_RT_LWIP_USING_PING=y
++# CONFIG_LWIP_USING_DHCPD is not set
++# CONFIG_RT_LWIP_ENABLE_USER_HOOKS is not set
++# CONFIG_RT_LWIP_DEBUG is not set
+ # CONFIG_RT_USING_AT is not set
+ # end of Network
+ 
+@@ -361,7 +543,11 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ #
+ # CONFIG_RT_USING_RYM is not set
+ # CONFIG_RT_USING_ULOG is not set
+-# CONFIG_RT_USING_UTEST is not set
++CONFIG_RT_USING_UTEST=y
++CONFIG_UTEST_THR_STACK_SIZE=4096
++CONFIG_UTEST_THR_PRIORITY=20
++# CONFIG_RT_UTEST_USING_AUTO_RUN is not set
++CONFIG_RT_UTEST_MAX_OPTIONS=64
+ # CONFIG_RT_USING_VAR_EXPORT is not set
+ # CONFIG_RT_USING_RESOURCE_ID is not set
+ # CONFIG_RT_USING_ADT is not set
+@@ -383,7 +569,97 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ #
+ # RT-Thread Utestcases
+ #
+-# CONFIG_RT_USING_UTESTCASES is not set
++CONFIG_RT_USING_UTESTCASES=y
++
++#
++# Kernel Core
++#
++# CONFIG_RT_UTEST_SMALL_MEM is not set
++# CONFIG_RT_UTEST_OBJECT is not set
++# CONFIG_RT_UTEST_IRQ is not set
++# CONFIG_RT_UTEST_SEMAPHORE is not set
++# CONFIG_RT_UTEST_EVENT is not set
++# CONFIG_RT_UTEST_TIMER is not set
++# CONFIG_RT_UTEST_MESSAGEQUEUE is not set
++# CONFIG_RT_UTEST_SIGNAL is not set
++# CONFIG_RT_UTEST_MUTEX is not set
++# CONFIG_RT_UTEST_MAILBOX is not set
++# CONFIG_RT_UTEST_THREAD is not set
++# CONFIG_RT_UTEST_ATOMIC is not set
++# CONFIG_RT_UTEST_HOOKLIST is not set
++# CONFIG_RT_UTEST_MTSAFE_KPRINT is not set
++# CONFIG_RT_UTEST_SCHEDULER is not set
++# CONFIG_RT_UTEST_MEMPOOL is not set
++# CONFIG_RT_UTEST_SYS_PERF is not set
++# CONFIG_RT_UTEST_TC_USING_KLIBC is not set
++# end of Kernel Core
++
++#
++# Kernel Components
++#
++
++#
++# Drivers
++#
++# CONFIG_RT_UTEST_DRIVERS_CORE is not set
++
++#
++# IPC Test
++#
++# CONFIG_RT_UTEST_COMPLETION is not set
++# CONFIG_RT_UTEST_WORKQUEUE is not set
++# end of IPC Test
++
++#
++# Serial Test
++#
++# end of Serial Test
++
++#
++# SMP-Call Test
++#
++# end of SMP-Call Test
++# end of Drivers
++
++#
++# File System
++#
++# CONFIG_RT_UTEST_TC_USING_DFS_API is not set
++# end of File System
++
++#
++# CPP11
++#
++# CONFIG_RT_UTEST_CPP11_THREAD is not set
++# end of CPP11
++
++#
++# Network
++#
++# CONFIG_RT_UTEST_TC_USING_SAL is not set
++# CONFIG_RT_UTEST_TC_USING_NETDEV is not set
++# CONFIG_RT_UTEST_TC_USING_LWIP is not set
++# end of Network
++
++#
++# Utest Framework
++#
++# CONFIG_RT_UTEST_SELF_PASS is not set
++# end of Utest Framework
++# end of Kernel Components
++
++#
++# Memory Management Subsytem Testcase
++#
++# CONFIG_RT_UTEST_MM_API is not set
++# CONFIG_RT_UTEST_MM_LWP is not set
++# end of Memory Management Subsytem Testcase
++
++#
++# Tmpfs Testcase
++#
++# CONFIG_RT_UTEST_TMPFS_CP is not set
++# end of Tmpfs Testcase
+ # end of RT-Thread Utestcases
+ 
+ #
+@@ -484,6 +760,7 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # CONFIG_PKG_USING_ABUP_FOTA is not set
+ # CONFIG_PKG_USING_LIBCURL2RTT is not set
+ # CONFIG_PKG_USING_CAPNP is not set
++# CONFIG_PKG_USING_ERPC is not set
+ # CONFIG_PKG_USING_AGILE_TELNET is not set
+ # CONFIG_PKG_USING_NMEALIB is not set
+ # CONFIG_PKG_USING_PDULIB is not set
+@@ -579,6 +856,7 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # CONFIG_PKG_USING_U8G2 is not set
+ # end of u8g2: a monochrome graphic library
+ 
++# CONFIG_PKG_USING_NES_SIMULATOR is not set
+ # CONFIG_PKG_USING_OPENMV is not set
+ # CONFIG_PKG_USING_MUPDF is not set
+ # CONFIG_PKG_USING_STEMWIN is not set
+@@ -599,11 +877,15 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # CONFIG_PKG_USING_GUIENGINE is not set
+ # CONFIG_PKG_USING_PERSIMMON is not set
+ # CONFIG_PKG_USING_3GPP_AMRNB is not set
++# CONFIG_PKG_USING_LITETYPE is not set
+ # end of multimedia packages
+ 
+ #
+ # tools packages
+ #
++# CONFIG_PKG_USING_VECTOR is not set
++# CONFIG_PKG_USING_SORCH is not set
++# CONFIG_PKG_USING_DICT is not set
+ # CONFIG_PKG_USING_CMBACKTRACE is not set
+ # CONFIG_PKG_USING_MCOREDUMP is not set
+ # CONFIG_PKG_USING_EASYFLASH is not set
+@@ -653,6 +935,11 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # CONFIG_PKG_USING_RVBACKTRACE is not set
+ # CONFIG_PKG_USING_HPATCHLITE is not set
+ # CONFIG_PKG_USING_THREAD_METRIC is not set
++# CONFIG_PKG_USING_UORB is not set
++# CONFIG_PKG_USING_RT_TUNNEL is not set
++# CONFIG_PKG_USING_VIRTUAL_TERMINAL is not set
++# CONFIG_PKG_USING_FEE is not set
++# CONFIG_PKG_USING_MRAMTRACE is not set
+ # end of tools packages
+ 
+ #
+@@ -710,7 +997,38 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # CONFIG_PKG_USING_SQLITE is not set
+ # CONFIG_PKG_USING_RTI is not set
+ # CONFIG_PKG_USING_DFS_YAFFS is not set
+-# CONFIG_PKG_USING_LITTLEFS is not set
++CONFIG_PKG_USING_LITTLEFS=y
++CONFIG_PKG_LITTLEFS_PATH="/packages/system/littlefs"
++# CONFIG_PKG_USING_LITTLEFS_V090 is not set
++# CONFIG_PKG_USING_LITTLEFS_V170 is not set
++# CONFIG_PKG_USING_LITTLEFS_V172 is not set
++# CONFIG_PKG_USING_LITTLEFS_V201 is not set
++# CONFIG_PKG_USING_LITTLEFS_V205 is not set
++# CONFIG_PKG_USING_LITTLEFS_V214 is not set
++# CONFIG_PKG_USING_LITTLEFS_V220 is not set
++# CONFIG_PKG_USING_LITTLEFS_V221 is not set
++# CONFIG_PKG_USING_LITTLEFS_V230 is not set
++# CONFIG_PKG_USING_LITTLEFS_V250 is not set
++# CONFIG_PKG_USING_LITTLEFS_V293 is not set
++# CONFIG_PKG_USING_LITTLEFS_V2112 is not set
++CONFIG_PKG_USING_LITTLEFS_LATEST_VERSION=y
++CONFIG_LFS_READ_SIZE=256
++CONFIG_LFS_PROG_SIZE=256
++CONFIG_LFS_BLOCK_SIZE=4096
++# CONFIG_LFS_YES_TRACE is not set
++CONFIG_LFS_NO_DEBUG=y
++# CONFIG_LFS_NO_WARN is not set
++# CONFIG_LFS_NO_ERROR is not set
++# CONFIG_LFS_NO_ASSERT is not set
++# CONFIG_LFS_NO_INTRINSICS is not set
++# CONFIG_LFS_NO_MALLOC is not set
++CONFIG_LFS_CACHE_SIZE=256
++CONFIG_LFS_BLOCK_CYCLES=-1
++# CONFIG_DFS_LFS_READONLY is not set
++CONFIG_LFS_THREADSAFE=y
++CONFIG_LFS_LOOKAHEAD_MAX=128
++CONFIG_RT_DEF_LFS_DRIVERS=1
++CONFIG_PKG_LITTLEFS_VER="latest"
+ # CONFIG_PKG_USING_DFS_JFFS2 is not set
+ # CONFIG_PKG_USING_DFS_UFFS is not set
+ # CONFIG_PKG_USING_LWEXT4 is not set
+@@ -747,6 +1065,9 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # CONFIG_PKG_USING_R_RHEALSTONE is not set
+ # CONFIG_PKG_USING_HEARTBEAT is not set
+ # CONFIG_PKG_USING_MICRO_ROS_RTTHREAD_PACKAGE is not set
++# CONFIG_PKG_USING_CHERRYECAT is not set
++# CONFIG_PKG_USING_EVENT_LOOP is not set
++# CONFIG_PKG_USING_THREAD_MANAGER is not set
+ # end of system packages
+ 
+ #
+@@ -830,7 +1151,21 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ # CONFIG_PKG_USING_NRFX is not set
+ # CONFIG_PKG_USING_RASPBERRYPI_PICO_RP2350_SDK is not set
+ # CONFIG_PKG_USING_RASPBERRYPI_PICO_SDK is not set
+-# CONFIG_PKG_USING_MM32 is not set
++
++#
++# MM32 HAL & SDK Drivers
++#
++# CONFIG_PKG_USING_MM32F103XX_CMSIS is not set
++# CONFIG_PKG_USING_MM32F3270X_CMSIS is not set
++# CONFIG_PKG_USING_MM32F5260X_CMSIS is not set
++# CONFIG_PKG_USING_MM32L0XX_CMSIS is not set
++# CONFIG_PKG_USING_MM32L3XX_CMSIS is not set
++# CONFIG_PKG_USING_MM32F103XX_HAL_DRIVER is not set
++# CONFIG_PKG_USING_MM32F3270X_HAL_DRIVER is not set
++# CONFIG_PKG_USING_MM32F5260X_HAL_DRIVER is not set
++# CONFIG_PKG_USING_MM32L0XX_HAL_DRIVER is not set
++# CONFIG_PKG_USING_MM32L3XX_HAL_DRIVER is not set
++# end of MM32 HAL & SDK Drivers
+ 
+ #
+ # WCH HAL & SDK Drivers
+@@ -892,9 +1227,7 @@ CONFIG_RT_LIBC_TZ_DEFAULT_SEC=0
+ #
+ # NUVOTON Drivers
+ #
+-# CONFIG_PKG_USING_NUVOTON_CMSIS_DRIVER is not set
+ # CONFIG_PKG_USING_NUVOTON_SERIES_DRIVER is not set
+-# CONFIG_PKG_USING_NUVOTON_ARM926_LIB is not set
+ # end of NUVOTON Drivers
+ 
+ #
+@@ -908,7 +1241,47 @@ CONFIG_PKG_USING_GD32_ARM_SERIES_DRIVER=y
+ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_PATH="/packages/peripherals/hal-sdk/gd32/gd32-arm-series"
+ CONFIG_PKG_USING_GD32_ARM_SERIES_DRIVER_LATEST_VERSION=y
+ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
++# CONFIG_PKG_USING_GD32_RISCV_SERIES_DRIVER is not set
++# CONFIG_PKG_USING_GD32VW55X_WIFI is not set
+ # end of GD32 Drivers
++
++#
++# HPMicro SDK
++#
++# CONFIG_PKG_USING_HPM_SDK is not set
++# end of HPMicro SDK
++
++#
++# FM33 Drivers
++#
++# CONFIG_PKG_USING_FM33LG0XX_FL_LIBRARY is not set
++# end of FM33 Drivers
++
++#
++# FT32 HAL & SDK Drivers
++#
++# CONFIG_PKG_USING_FT32F0_STD_DRIVER is not set
++# CONFIG_PKG_USING_FT32F0_CMSIS_DRIVER is not set
++# CONFIG_PKG_USING_FT32F4_STD_DRIVER is not set
++# CONFIG_PKG_USING_FT32F4_CMSIS_DRIVER is not set
++# end of FT32 HAL & SDK Drivers
++
++#
++# NOVOSNS Drivers
++#
++# CONFIG_PKG_USING_NOVOSNS_SERIES_DRIVER is not set
++# end of NOVOSNS Drivers
++
++#
++# N32 Drivers
++#
++# CONFIG_PKG_USING_N32H7XX_STD_DRIVER is not set
++# CONFIG_PKG_USING_N32H7XX_CMSIS_DRIVER is not set
++# CONFIG_PKG_USING_N32H49X_STD_DRIVER is not set
++# CONFIG_PKG_USING_N32H49X_CMSIS_DRIVER is not set
++# CONFIG_PKG_USING_N32H47X_48X_STD_DRIVER is not set
++# CONFIG_PKG_USING_N32H47X_48X_CMSIS_DRIVER is not set
++# end of N32 Drivers
+ # end of HAL & SDK Drivers
+ 
+ #
+@@ -954,9 +1327,11 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_RT3020 is not set
+ # CONFIG_PKG_USING_MLX90632 is not set
+ # CONFIG_PKG_USING_MLX90382 is not set
++# CONFIG_PKG_USING_MLX90384 is not set
+ # CONFIG_PKG_USING_MLX90393 is not set
+ # CONFIG_PKG_USING_MLX90392 is not set
+ # CONFIG_PKG_USING_MLX90394 is not set
++# CONFIG_PKG_USING_MLX90396 is not set
+ # CONFIG_PKG_USING_MLX90397 is not set
+ # CONFIG_PKG_USING_MS5611 is not set
+ # CONFIG_PKG_USING_MAX31865 is not set
+@@ -985,6 +1360,8 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_P3T1755 is not set
+ # CONFIG_PKG_USING_QMI8658 is not set
+ # CONFIG_PKG_USING_ICM20948 is not set
++# CONFIG_PKG_USING_SCD4X is not set
++# CONFIG_PKG_USING_BMI270 is not set
+ # end of sensors drivers
+ 
+ #
+@@ -1002,6 +1379,7 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_CST812T is not set
+ # end of touch drivers
+ 
++# CONFIG_PKG_USING_LCD_SPI_DRIVER is not set
+ # CONFIG_PKG_USING_REALTEK_AMEBA is not set
+ # CONFIG_PKG_USING_BUTTON is not set
+ # CONFIG_PKG_USING_PCF8574 is not set
+@@ -1038,6 +1416,7 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_WK2124 is not set
+ # CONFIG_PKG_USING_LY68L6400 is not set
+ # CONFIG_PKG_USING_DM9051 is not set
++# CONFIG_PKG_USING_CH390 is not set
+ # CONFIG_PKG_USING_SSD1306 is not set
+ # CONFIG_PKG_USING_QKEY is not set
+ # CONFIG_PKG_USING_RS485 is not set
+@@ -1081,6 +1460,14 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_IC74HC165 is not set
+ # CONFIG_PKG_USING_IST8310 is not set
+ # CONFIG_PKG_USING_ST7789_SPI is not set
++# CONFIG_PKG_USING_CAN_UDS is not set
++# CONFIG_PKG_USING_ISOTP_C is not set
++# CONFIG_PKG_USING_IKUNLED is not set
++# CONFIG_PKG_USING_INS5T8025 is not set
++# CONFIG_PKG_USING_IRUART is not set
++# CONFIG_PKG_USING_ST7305 is not set
++# CONFIG_PKG_USING_TM1668 is not set
++# CONFIG_PKG_USING_TCA9548A is not set
+ # CONFIG_PKG_USING_SPI_TOOLS is not set
+ # end of peripheral libraries and drivers
+ 
+@@ -1098,6 +1485,9 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_NAXOS is not set
+ # CONFIG_PKG_USING_R_TINYMAIX is not set
+ # CONFIG_PKG_USING_LLMCHAT is not set
++# CONFIG_PKG_USING_LIME_TM is not set
++# CONFIG_PKG_USING_AIFES is not set
++# CONFIG_PKG_USING_AGENT is not set
+ # end of AI packages
+ 
+ #
+@@ -1157,6 +1547,7 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_MULTIBUTTON is not set
+ # CONFIG_PKG_USING_FLEXIBLE_BUTTON is not set
+ # CONFIG_PKG_USING_CANFESTIVAL is not set
++# CONFIG_PKG_USING_CANOPENNODE is not set
+ # CONFIG_PKG_USING_ZLIB is not set
+ # CONFIG_PKG_USING_MINIZIP is not set
+ # CONFIG_PKG_USING_HEATSHRINK is not set
+@@ -1182,6 +1573,7 @@ CONFIG_PKG_GD32_ARM_SERIES_DRIVER_VER="latest"
+ # CONFIG_PKG_USING_QPARAM is not set
+ # CONFIG_PKG_USING_CorevMCU_CLI is not set
+ # CONFIG_PKG_USING_DRMP is not set
++# CONFIG_PKG_USING_AUTOGEN_PARAMETER_MANAGER is not set
+ # end of miscellaneous packages
+ 
+ #
+@@ -1439,16 +1831,54 @@ CONFIG_SOC_GD32H759I=y
+ CONFIG_BSP_USING_GPIO=y
+ CONFIG_BSP_USING_UART=y
+ CONFIG_BSP_USING_UART0=y
+-# CONFIG_BSP_UART0_RX_USING_DMA is not set
+-# CONFIG_BSP_USING_UART1 is not set
+-# CONFIG_BSP_USING_UART2 is not set
+-# CONFIG_BSP_USING_UART3 is not set
+-# CONFIG_BSP_USING_I2C is not set
+-# CONFIG_BSP_USING_SPI is not set
++CONFIG_BSP_UART0_RX_USING_DMA=y
++CONFIG_BSP_USING_UART1=y
++CONFIG_BSP_UART1_RX_USING_DMA=y
++CONFIG_BSP_USING_UART2=y
++CONFIG_BSP_UART2_RX_USING_DMA=y
++CONFIG_BSP_USING_UART3=y
++CONFIG_BSP_UART3_RX_USING_DMA=y
++CONFIG_BSP_USING_I2C=y
++# CONFIG_BSP_USING_I2C0 is not set
++CONFIG_BSP_USING_I2C1=y
++# CONFIG_BSP_USING_I2C2 is not set
++# CONFIG_BSP_USING_I2C3 is not set
++CONFIG_BSP_USING_SPI=y
++# CONFIG_BSP_USING_SPI0 is not set
++# CONFIG_BSP_USING_SPI1 is not set
++# CONFIG_BSP_USING_SPI2 is not set
++# CONFIG_BSP_USING_SPI3 is not set
++CONFIG_BSP_USING_SPI4=y
++# CONFIG_BSP_USING_SPI5 is not set
++# CONFIG_BSP_USING_I2S is not set
++CONFIG_BSP_USING_CAN=y
++CONFIG_BSP_USING_CAN1=y
++CONFIG_BSP_CAN1_TX_PB13=y
++CONFIG_BSP_CAN1_RX_PB5=y
++CONFIG_BSP_USING_CAN2=y
++CONFIG_BSP_CAN2_TX_PF7=y
++CONFIG_BSP_CAN2_RX_PF6=y
++CONFIG_BSP_USING_ETH=y
++CONFIG_BSP_USING_ADC=y
++CONFIG_BSP_USING_DAC=y
++CONFIG_BSP_USING_SDRAM=y
++CONFIG_BSP_USING_OSPI=y
++CONFIG_BSP_USING_SDIO=y
++CONFIG_BSP_SDIO_AUTO_MOUNT=y
++CONFIG_BSP_SDIO_1BIT=y
++CONFIG_BSP_SDIO_REPROBE_CMD=y
++# CONFIG_BSP_USING_TLI is not set
++CONFIG_BSP_USING_RTC=y
++CONFIG_BSP_USING_HPDF=y
++# CONFIG_BSP_HPDF_DATA_ON_PC3 is not set
++CONFIG_BSP_USING_DCI_OV2640=y
++CONFIG_BSP_USING_USB_CDC=y
+ CONFIG_BSP_USING_GD_DBG=y
+ # end of On-chip Peripheral Drivers
+ 
+ #
+ # Board extended module Drivers
+ #
++# CONFIG_BSP_USING_ST7789 is not set
++# end of Board extended module Drivers
+ # end of Hardware Drivers Config
+diff --git a/bsp/gd32/arm/gd32h759i-eval/applications/main.c b/bsp/gd32/arm/gd32h759i-eval/applications/main.c
+index 9219b28839..3b0b037430 100644
+--- a/bsp/gd32/arm/gd32h759i-eval/applications/main.c
++++ b/bsp/gd32/arm/gd32h759i-eval/applications/main.c
+@@ -1,36 +1,110 @@
+-/*
+- * Copyright (c) 2006-2025, RT-Thread Development Team
+- *
+- * SPDX-License-Identifier: Apache-2.0
+- *
+- * Change Logs:
+- * Date           Author       Notes
+- * 2021-08-20     BruceOu      first implementation
+- * 2025-08-20     WangShun     change the LED pins
+- */
+-
+ #include <stdio.h>
++#include <string.h>
+ #include <rtthread.h>
+ #include <rtdevice.h>
+ #include <board.h>
+ 
+-/* defined the LED1 pin: PF10 */
+-#define LED1_PIN GET_PIN(F, 10)
++/* ========== LED（注意跳线：JP50(2,3) 接 LED1，JP66(2,3) 接 LED2）========== */
++#define LED1_PIN   GET_PIN(F, 10)
++#define LED2_PIN   GET_PIN(A, 6)
+ 
+-int main(void)
++/* ========== 按键（全部为实测极性）========== */
++struct key_desc {
++    rt_int32_t  pin;
++    rt_uint8_t  active;      /* 按下时的电平 */
++    rt_uint8_t  irq_mode;
++    rt_uint8_t  pull_mode;
++    const char *name;
++    rt_uint32_t led_mask;    /* 按下时要点亮的灯：bit0=LED1, bit1=LED2 */
++    rt_uint32_t count;
++};
++
++static struct key_desc keys[] = {
++    { GET_PIN(A, 0),  PIN_HIGH, PIN_IRQ_MODE_RISING,  PIN_MODE_INPUT_PULLDOWN, "WAKEUP(PA0) ", 0x1, 0 },
++    { GET_PIN(C, 13), PIN_LOW,  PIN_IRQ_MODE_FALLING, PIN_MODE_INPUT_PULLUP,   "TAMPER(PC13)", 0x2, 0 },
++    { GET_PIN(F, 8),  PIN_LOW,  PIN_IRQ_MODE_FALLING, PIN_MODE_INPUT_PULLUP,   "USER  (PF8) ", 0x3, 0 },
++};
++#define KEY_NUM  (sizeof(keys) / sizeof(keys[0]))
++
++static struct rt_semaphore key_sem;
++static struct rt_mailbox   led_mb;
++static rt_uint32_t         led_mb_pool[4];
++
++/* ISR：只发信号量 */
++static void key_isr(void *args)
++{
++    rt_sem_release(&key_sem);
++}
++
++/* LED 线程：收邮件，按掩码快闪两遍 */
++static void led_thread_entry(void *param)
+ {
+-    int count = 1;
++    rt_uint32_t mask;
+ 
+-    /* set LED1 pin mode to output */
+     rt_pin_mode(LED1_PIN, PIN_MODE_OUTPUT);
++    rt_pin_mode(LED2_PIN, PIN_MODE_OUTPUT);
++    rt_pin_write(LED1_PIN, PIN_LOW);
++    rt_pin_write(LED2_PIN, PIN_LOW);
+ 
+-    while (count++)
+-    {
+-        rt_pin_write(LED1_PIN, PIN_HIGH);
+-        rt_thread_mdelay(500);
+-        rt_pin_write(LED1_PIN, PIN_LOW);
+-        rt_thread_mdelay(500);
++    while (1) {
++        if (rt_mb_recv(&led_mb, &mask, RT_WAITING_FOREVER) == RT_EOK) {
++            for (int i = 0; i < 2; i++) {
++                if (mask & 0x1) rt_pin_write(LED1_PIN, PIN_HIGH);
++                if (mask & 0x2) rt_pin_write(LED2_PIN, PIN_HIGH);
++                rt_thread_mdelay(120);
++                rt_pin_write(LED1_PIN, PIN_LOW);
++                rt_pin_write(LED2_PIN, PIN_LOW);
++                rt_thread_mdelay(120);
++            }
++        }
+     }
++}
+ 
+-    return RT_EOK;
++/* 按键线程：消抖、计时、上报、派灯效 */
++static void key_thread_entry(void *param)
++{
++    while (1) {
++        rt_sem_take(&key_sem, RT_WAITING_FOREVER);
++        rt_thread_mdelay(20);
++
++        for (int i = 0; i < KEY_NUM; i++) {
++            struct key_desc *k = &keys[i];
++            if (rt_pin_read(k->pin) == k->active) {
++                rt_uint32_t t0 = rt_tick_get_millisecond();
++                while (rt_pin_read(k->pin) == k->active)
++                    rt_thread_mdelay(10);
++                rt_uint32_t held = rt_tick_get_millisecond() - t0;
++                k->count++;
++
++                rt_kprintf("[KEY] %s %s, held %ums, total #%u\n",
++                           k->name, held > 1000 ? "LONG " : "short",
++                           held, k->count);
++                rt_mb_send(&led_mb, k->led_mask);   /* 通知 LED 线程 */
++            }
++        }
++    }
+ }
++
++int main(void)
++{
++    rt_kprintf("build marker: v9 - keys + leds\n");
++
++    rt_sem_init(&key_sem, "key", 0, RT_IPC_FLAG_PRIO);
++    rt_mb_init(&led_mb, "led", led_mb_pool, 4, RT_IPC_FLAG_PRIO);
++
++    for (int i = 0; i < KEY_NUM; i++) {
++        rt_pin_mode(keys[i].pin, keys[i].pull_mode);
++        rt_pin_attach_irq(keys[i].pin, keys[i].irq_mode, key_isr, RT_NULL);
++        rt_pin_irq_enable(keys[i].pin, PIN_IRQ_ENABLE);
++    }
++
++    rt_thread_t tid;
++    tid = rt_thread_create("key", key_thread_entry, RT_NULL, 2048, 20, 10);
++    if (tid) rt_thread_startup(tid);
++    tid = rt_thread_create("led", led_thread_entry, RT_NULL, 1024, 21, 10);
++    if (tid) rt_thread_startup(tid);
++
++    rt_kprintf("ready: WAKEUP->LED1, TAMPER->LED2, USER->both\n");
++    while (1) rt_thread_mdelay(60000);
++    return RT_EOK;
++}
+\ No newline at end of file
+diff --git a/bsp/gd32/arm/gd32h759i-eval/board/Kconfig b/bsp/gd32/arm/gd32h759i-eval/board/Kconfig
+index 0ee1c1d6cc..010ea4f400 100644
+--- a/bsp/gd32/arm/gd32h759i-eval/board/Kconfig
++++ b/bsp/gd32/arm/gd32h759i-eval/board/Kconfig
+@@ -69,34 +69,45 @@ menu "On-chip Peripheral Drivers"
+ 
+         endif
+ 
++    # GD32H759 has 4 hardware I2C controllers (I2C0..I2C3).
++    # Single unified list - do NOT add per-instance blocks elsewhere.
+     menuconfig BSP_USING_I2C
+         bool "Enable I2C"
+         default n
++        select RT_USING_I2C
+         if BSP_USING_I2C
+-            menuconfig BSP_USING_HARD_I2C
+-                bool "Enable Hardware I2C"
+-                default n
+-                select RT_USING_I2C
+-                if BSP_USING_HARD_I2C
+-                    config BSP_USING_HARD_I2C0
+-                        bool "Enable I2C0 Hardware BUS"
+-                        default n                    
+-                    config BSP_USING_HARD_I2C1
+-                        bool "Enable I2C1 Hardware BUS"
+-                        default n
+-                    config BSP_USING_HARD_I2C2
+-                        bool "Enable I2C2 Hardware BUS"
+-                        default n
+-                    config BSP_USING_HARD_I2C3
+-                        bool "Enable I2C3 Hardware BUS"
+-                        default n
+-                    config BSP_USING_HARD_I2C4
+-                        bool "Enable I2C4 Hardware BUS"
+-                        default n
+-                    config BSP_USING_HARD_I2C5
+-                        bool "Enable I2C5 Hardware BUS"
+-                        default n
+-                endif
++            config BSP_USING_I2C0
++                bool "Enable I2C0 (SCL=PB6, SDA=PB7)"
++                default n
++                help
++                    Default pins: SCL=PB6(AF4), SDA=PB7(AF4), open-drain.
++                    WARNING on EVAL board: PB6 is OSPI0_NCS and PB7 is the
++                    user LED. Check for conflicts before enabling.
++
++            config BSP_USING_I2C1
++                bool "Enable I2C1 (onboard AT24C02 EEPROM)"
++                default n
++                help
++                    GD32H759I-EVAL carries an AT24C02 (256B) on I2C1:
++                    SCL=PH4(AF4, OD+pull-up), SDA=PB11(AF4, OD+pull-up).
++                    The H7 I2C is a new IP (TIMING/RELOAD/AUTOEND), driven
++                    by drv_i2c_h7.c (multi-instance, one transfer engine).
++                    Shell cmds: i2c_scan / at24_read / at24_write / at24_selftest.
++                    Also serves as the SCCB bus of the DCI camera (OV2640).
++
++            config BSP_USING_I2C2
++                bool "Enable I2C2 (SCL=PA8, SDA=PC9)"
++                default n
++                help
++                    Default pins: SCL=PA8(AF4), SDA=PC9(AF4).
++                    WARNING: PC9 is SDIO_D1 - conflicts with TF card 4-bit mode.
++
++            config BSP_USING_I2C3
++                bool "Enable I2C3 (SCL=PB8, SDA=PB9, AF6)"
++                default n
++                help
++                    Default pins: SCL=PB8(AF6), SDA=PB9(AF6).
++                    WARNING: PB9 is also I2S1_WS (CS4344 audio path).
+         endif
+ 
+     menuconfig BSP_USING_SPI
+@@ -110,6 +121,9 @@ menu "On-chip Peripheral Drivers"
+             config BSP_USING_SPI1
+                 bool "Enable SPI1 BUS"
+                 default n
++                help
++                    WARNING: SPI1 is shared with I2S1 (CS4344 audio path).
++                    Do not enable both.
+             config BSP_USING_SPI2
+                 bool "Enable SPI2 BUS"
+                 default n
+@@ -119,17 +133,260 @@ menu "On-chip Peripheral Drivers"
+             config BSP_USING_SPI4
+                 bool "Enable SPI4 BUS"
+                 default n
++                help
++                    EVAL board pins: SCK=PH6, MOSI=PF9, MISO=PH7, NSS=PF6
++                    (AF5). Direct landings on the extension headers, no
++                    jumpers involved: SCK=JP8-37, MISO=JP8-38, MOSI=JP7-27,
++                    NSS=JP7-24. Used by the ST7789 LCD module.
+             config BSP_USING_SPI5
+                 bool "Enable SPI5 BUS"
+                 default n
+         endif
+ 
+-    source "$(BSP_DIR)/../libraries/gd32_drivers/Kconfig"        
++    # GD32H759 I2S is embedded in SPI units: I2S0/I2S1/I2S2/I2S5
++    # (SPI3/SPI4 have no I2S function; SAI0/SAI1/SAI2 are separate IPs).
++    menuconfig BSP_USING_I2S
++        bool "Enable I2S"
++        default n
++        if BSP_USING_I2S
++            config BSP_USING_I2S0
++                bool "Enable I2S0 (shares SPI0 unit)"
++                default n
++                help
++                    I2S0 is the I2S function of the SPI0 unit. Do not
++                    enable BSP_USING_SPI0 at the same time.
++
++            config BSP_USING_I2S1
++                bool "Enable I2S1 (CS4344 DAC -> J2 earphone jack)"
++                default n
++                help
++                    Audio playback path: I2S1 (I2S function of SPI1 unit)
++                    -> CS4344 (U13, data-only DAC) -> J2 earphone jack.
++                    Pins (all AF5, on-board wiring): MCK=PC6, CK=PD3,
++                    WS=PB9, SD=PC3. Jumper prerequisites: JP54(2,3)=I2S1_WS,
++                    JP58(2,3)=I2S1_CK, JP63=I2S1_MCK, JP40=I2S1_SD.
++                    16kHz/16bit stereo, kernel clock from PLL0Q, TP interrupt
++                    feeding (same scheme as the official HPDF_I2S demo).
++                    Shell cmds: i2s_beep [ms] [hz] (sine test tone),
++                    i2s_dbg (register dump).
++                    Enable together with BSP_USING_HPDF for
++                    "mic capture -> LCD waveform + earphone passthrough".
++                    Do not enable BSP_USING_SPI1 at the same time.
++
++            config BSP_USING_I2S2
++                bool "Enable I2S2 (shares SPI2 unit)"
++                default n
++                help
++                    I2S2 is the I2S function of the SPI2 unit. Do not
++                    enable BSP_USING_SPI2 at the same time.
++
++            config BSP_USING_I2S5
++                bool "Enable I2S5 (shares SPI5 unit)"
++                default n
++                help
++                    I2S5 is the I2S function of the SPI5 unit. Do not
++                    enable BSP_USING_SPI5 at the same time.
++        endif
++
++    menuconfig BSP_USING_CAN
++        bool "Enable CAN"
++        default n
++        select RT_USING_CAN
++        if BSP_USING_CAN
++            config BSP_USING_CAN1
++                bool "Enable CAN1 (TX=PB13, RX=PB5)"
++                default n
++            if BSP_USING_CAN1
++                config BSP_CAN1_TX_PB13
++                    bool "CAN1 TX -> PB13"
++                    default y
++                config BSP_CAN1_RX_PB5
++                    bool "CAN1 RX -> PB5"
++                    default y
++            endif
++            config BSP_USING_CAN2
++                bool "Enable CAN2 (TX=PF7, RX=PF6)"
++                default n
++            if BSP_USING_CAN2
++                config BSP_CAN2_TX_PF7
++                    bool "CAN2 TX -> PF7"
++                    default y
++                config BSP_CAN2_RX_PF6
++                    bool "CAN2 RX -> PF6"
++                    default y
++            endif
++        endif
++
++    menuconfig BSP_USING_ETH
++        bool "Enable Ethernet (ENET0 + DP83848, RMII)"
++        select RT_USING_LWIP
++        default n
++        help
++            WARNING: conflicts with TLI (PG11/PG13/PG14). Disable TLI
++            before enabling Ethernet.
++
++    menuconfig BSP_USING_ADC
++        bool "Enable ADC (PC2_C, onboard VR1)"
++        select RT_USING_ADC
++        default n
++
++    menuconfig BSP_USING_DAC
++        bool "Enable DAC (PA5, JP71)"
++        select RT_USING_DAC
++        default n
++        help
++            WARNING: PA5 (DAC0_OUT1) is also LCD_R4 - conflicts with TLI.
++
++    config BSP_USING_SDRAM
++        bool "Enable SDRAM (EXMC DEVICE0, MT48LC16M16A2 32MB)"
++        default n
++
++    config BSP_USING_OSPI
++        bool "Enable OSPI0 (onboard GD25X512ME 64MB octal flash)"
++        default n
++        help
++            Onboard octal NOR flash U7 = GD25X512MEBIRY (512Mbit/64MB,
++            JEDEC ID 0xC8481AFF), via OSPI0 + OSPIM port 0.
++            Pins: NCS=PB6(AF10), CLK=PB2(AF9),
++            IO0~IO7 = PD11/PD12(AF9), PA3(AF6), PD13(AF9),
++            PD4/PD5/PD6/PD7(AF10). DQS not connected (no-DQS mode only).
++            Jumper prerequisite: JP61 to (2,3) = OSPI side.
++            Conflicts: PB6 with I2C0_SCL / DCI_D5 (both unused).
++            Memory-mapped base: 0x90000000.
++            Chip command layer: gd25x512me.c (from the official demo).
++            Shell cmds: ospi_id / ospi_test1 / ospi_test8 / ospi_mmap.
++
++    config BSP_USING_SDIO
++        bool "Enable SDIO (TF card)"
++        select RT_USING_SDIO
++        select RT_USING_DFS
++        select RT_USING_DFS_ELMFAT
++        select RT_USING_DFS_MNTTABLE
++        default n
++
++    config BSP_SDIO_AUTO_MOUNT
++        bool "Auto mount sd0 to / (event-driven watcher)"
++        default y
++        depends on BSP_USING_SDIO
++        help
++            Card detection completes asynchronously in the mmcsd_detect
++            thread, so the DFS mount_table's mount-at-boot is doomed to
++            fail. This option starts an event-driven watcher thread: mount
++            sd0 to / on the insertion event from mmcsd_wait_cd_changed(),
++            umount on removal.
++
++    config BSP_SDIO_1BIT
++        bool "Force SDIO 1-bit bus (JP52 shared with LCD)"
++        default y
++        depends on BSP_USING_SDIO
++        help
++            On this board PC11 is both SDIO_D3 and LCD_B4, physically
++            selected by JP52. With JP52 on the LCD side (mandatory when
++            TLI is on), D3 does not exist and 4-bit mode dies right after
++            the ACMD6 bus-width switch. 1-bit mode uses only CLK/CMD/D0,
++            coexists with the LCD, ~6MB/s @ 50MHz - enough for CSV logging.
++            Disable this option to restore 4-bit when TLI is off or on a
++            custom board without this mux.
++
++    config BSP_SDIO_REPROBE_CMD
++        bool "Enable sdprobe shell cmd (board without CD pin)"
++        default y
++        depends on BSP_USING_SDIO
++        help
++            Only needed on boards whose socket CD (Card Detect) signal is
++            not wired to the MCU: without CD the framework never gets
++            hot-plug events, so run sdprobe in the shell after re-inserting
++            a card. On a custom board with CD wired to the MCU, the right
++            approach is a GPIO EXTI + debounce + mmcsd_change() with a
++            truthful get_card_status() - not implemented in this project;
++            disable this option in that case.
++
++    config BSP_USING_TLI
++        bool "Enable TLI LCD (480x272 RGB panel)"
++        default n
++        select BSP_USING_SDRAM
++        help
++            Board-level conflicts: enabling TLI requires disabling ENET
++            (PG11/13/14); JP52 must be set to (1,2)=TLI (SDIO degrades to
++            1-bit mode); DAC0_OUT1(PA5) gives way to LCD_R4.
++
++    config BSP_USING_TOUCH
++        bool "Enable GT911 touch (software I2C)"
++        default n
++        depends on BSP_USING_TLI
++
++    config BSP_USING_RTC
++        bool "Enable RTC calendar (LXTAL, IRC32K fallback)"
++        default n
++        select RT_USING_RTC
++
++    config BSP_USING_HPDF
++        bool "Enable HPDF (onboard dual MP34DT06J digital mics)"
++        default n
++        help
++            Onboard dual PDM digital microphones: HPDF_CKOUT=PB0,
++            HPDF_DATA=PB1 (both AF6). Jumpers JP55/JP56 to (2,3) = HPDF
++            side. PDM clock 1MHz (PER=HXTAL 25MHz / 25), SINC4 filter with
++            64x decimation -> 15.625kHz stereo PCM, DMA1 CH1/CH3 circular
++            double buffer. Shell cmds: hpdf_test (live level meter),
++            hpdf_dbg (register/edge forensics).
++            Pair with BSP_USING_I2S1 for earphone passthrough, and with
++            BSP_USING_ST7789 for on-LCD waveform.
++
++    config BSP_HPDF_DATA_ON_PC3
++        bool "HPDF data pin -> PC3 (JP7-35) instead of PB1"
++        default n
++        depends on BSP_USING_HPDF && !BSP_USING_I2S1
++        help
++            Board-repair option for specimens whose PB1 PCB trace is
++            broken (verdict confirmed by the official HPDF_I2S demo also
++            producing silence). Reroutes HPDF_DATAIN1 to its alternate
++            pin PC3 (AF3, landing on extension header JP7-35).
++            Wiring: pull the JP55 cap, dupont-wire JP55-3 (mic DOUT side)
++            to JP7-35.
++            Mutually exclusive with BSP_USING_I2S1 (PC3 is I2S1_SD);
++            earphone playback must be disabled while this is on.
++
++    config BSP_USING_DCI_OV2640
++        bool "Enable DCI camera (OV2640)"
++        default n
++        depends on BSP_USING_I2C1
++        help
++            OV2640 camera module, jumpers JP60/JP61/JP62/JP63 to DCI side:
++            SCCB  = hardware I2C1 (SCL=PH4 / SDA=PB11, AF4 open-drain)
++            XCLK  = PA8 (CKOUT0, HXTAL/3 ~ 8.33MHz)
++            PIXCLK=PE3  VSYNC=PB7  HSYNC=PA4
++            D0~D7 = PC6/PH10/PC8/PC9/PE4/PB6/PE5/PE6 (AF13)
++            DMA1 CH7 circular -> SDRAM 0xC0000000, 320x240 RGB565.
++            Depends on BSP_USING_I2C1 (SCCB rides the "i2c1" bus of
++            drv_i2c_h7). Note: PB6(D5) conflicts with OSPI, PC9(D3) with
++            SDIO_D1 (keep SDIO in 1-bit mode).
++            NOTE: this unit is currently parked - the camera connector on
++            this specimen shows hardware degradation (official demo hangs
++            identically). Enable only with a known-good module/board.
++            
++    config BSP_USING_USB_CDC
++        bool "Enable USBHS0 CDC ACM (CherryUSB, virtual COM)"
++        default n
++
++    source "$(BSP_DIR)/../libraries/gd32_drivers/Kconfig"
+ endmenu
+ 
+ menu "Board extended module Drivers"
+ 
+-endmenu
++    config BSP_USING_ST7789
++        bool "Enable ST7789 SPI LCD (240x240)"
++        default n
++        depends on BSP_USING_SPI4
++        help
++            8-pin ST7789 module, dupont-wired to the extension headers:
++            SCL->JP8-37(PH6/SCK)  SDA->JP7-27(PF9/MOSI)  CS->JP7-24(PF6)
++            DC->JP10-29(PB5)  RES->JP10-28(PB4)
++            Keep away from PA9/PA10 (console UART0)!
++            BLK left floating = always on (on-board pull-up), VCC=3.3V.
++            The driver lives in applications/ (a peripheral of a
++            peripheral); see applications/SConscript for the gating.
+ 
+ endmenu
+ 
++endmenu
+diff --git a/bsp/gd32/arm/gd32h759i-eval/board/SConscript b/bsp/gd32/arm/gd32h759i-eval/board/SConscript
+index 0cd2fafee6..1cf219b243 100644
+--- a/bsp/gd32/arm/gd32h759i-eval/board/SConscript
++++ b/bsp/gd32/arm/gd32h759i-eval/board/SConscript
+@@ -14,4 +14,8 @@ path =  [cwd]
+ CPPDEFINES = ['GD32H7XX']
+ group = DefineGroup('Drivers', src, depend = [''], CPPPATH = path, CPPDEFINES = CPPDEFINES)
+ 
++# HAL 补充：pkgs 拉取的 GD32 标准外设库不便打补丁，在本 BSP 内补齐所需外设源文件
++# （相对路径引入，才能继承 variant_dir 映射，把 .o 落到 build/）
++group = group + SConscript('hal_supplement/SConscript')
++
+ Return('group')
+diff --git a/bsp/gd32/arm/gd32h759i-eval/board/linker_scripts/link.ld b/bsp/gd32/arm/gd32h759i-eval/board/linker_scripts/link.ld
+index 72d03371d8..422221c30f 100644
+--- a/bsp/gd32/arm/gd32h759i-eval/board/linker_scripts/link.ld
++++ b/bsp/gd32/arm/gd32h759i-eval/board/linker_scripts/link.ld
+@@ -2,13 +2,15 @@
+ MEMORY
+ {
+   CODE (rx)       : ORIGIN = 0x08000000, LENGTH = 3M
+-  DATA (xrw)      : ORIGIN = 0x24000000, LENGTH = 512K
++  DATA (xrw)      : ORIGIN = 0x24000000, LENGTH = 448K
++  DMARAM (xrw)    : ORIGIN = 0x24070000, LENGTH = 64K
+   ITCMRAM(xrw)    : ORIGIN = 0x00000000, LENGTH = 64K
+   DTCMRAM(xrw)    : ORIGIN = 0x20000000, LENGTH = 64K
++  ENETRAM(xrw)    : ORIGIN = 0x30000000, LENGTH = 16K
+ }
+ 
+ ENTRY(Reset_Handler)
+-_system_stack_size = 0x200;
++_system_stack_size = 0x1000;   /* 中断/MSP 栈：带 FPU + 多路 ISR（ENET/SDIO/HPDF/USB）4KB */
+ 
+ SECTIONS
+ {
+@@ -42,10 +44,21 @@ SECTIONS
+         __rt_init_start = .;
+         KEEP(*(SORT(.rti_fn*)))
+         __rt_init_end = .;
++
++        . = ALIGN(4);
++        __rt_utest_tc_tab_start = .;
++        KEEP(*(UtestTcTab))
++        __rt_utest_tc_tab_end = .;
++
++
+         . = ALIGN(4);
+ 
+         . = ALIGN(4);
+         _etext = .;
++
++
++
++
+     } > CODE = 0
+ 
+     /* .ARM.exidx is sorted, so has to go in its own output section.  */
+@@ -102,6 +115,31 @@ SECTIONS
+     } > DATA
+     __bss_end = .;
+ 
++    __enet_ram_start = .;
++    .enet_ram (NOLOAD) :
++    {
++        . = ALIGN(4);
++        *(.ARM.__at_0x30000000)   /* rxdesc_tab */
++        *(.ARM.__at_0x30000160)   /* txdesc_tab */
++        *(.ARM.__at_0x30000300)   /* rx_buff */
++        *(.ARM.__at_0x30002100)   /* tx_buff */
++        . = ALIGN(4);
++    } > ENETRAM
++    __enet_ram_end = .;
++
++    /* DMA 非cacheable 缓冲段：由 drv_dma_mem.c 用 MPU 配为 Normal Non-cacheable。
++     * 所有 DMA 缓冲放这里后 CPU/DMA 天然一致，无需逐次 cache 维护。
++     * 放在 DMARAM(0x24070000, 64KB)，须与 drv_dma_mem.c 的 MPU 区域一致。 */
++    .dma_buffer (NOLOAD) :
++    {
++        . = ALIGN(32);
++        _dma_buffer_start = .;
++        *(.dma_buffer)
++        *(.dma_buffer*)
++        . = ALIGN(32);
++        _dma_buffer_end = .;
++    } > DMARAM
++
+     _end = .;
+ 
+   _sitcmram = LOADADDR(.itcmram);
+diff --git a/bsp/gd32/arm/gd32h759i-eval/rtconfig.h b/bsp/gd32/arm/gd32h759i-eval/rtconfig.h
+index 028442c617..3303dac67a 100644
+--- a/bsp/gd32/arm/gd32h759i-eval/rtconfig.h
++++ b/bsp/gd32/arm/gd32h759i-eval/rtconfig.h
+@@ -72,10 +72,10 @@
+ #define RT_HOOK_USING_FUNC_PTR
+ #define RT_USING_IDLE_HOOK
+ #define RT_IDLE_HOOK_LIST_SIZE 4
+-#define IDLE_THREAD_STACK_SIZE 256
++#define IDLE_THREAD_STACK_SIZE 2048
+ #define RT_USING_TIMER_SOFT
+ #define RT_TIMER_THREAD_PRIO 4
+-#define RT_TIMER_THREAD_STACK_SIZE 512
++#define RT_TIMER_THREAD_STACK_SIZE 1024
+ 
+ /* kservice options */
+ 
+@@ -103,7 +103,7 @@
+ /* end of Memory Management */
+ #define RT_USING_DEVICE
+ #define RT_USING_CONSOLE
+-#define RT_CONSOLEBUF_SIZE 128
++#define RT_CONSOLEBUF_SIZE 256
+ #define RT_CONSOLE_DEVICE_NAME "uart0"
+ #define RT_VER_NUM 0x50201
+ #define RT_BACKTRACE_LEVEL_MAX_NR 32
+@@ -141,12 +141,32 @@
+ #define RT_USING_DFS
+ #define DFS_USING_POSIX
+ #define DFS_USING_WORKDIR
++#define RT_USING_DFS_MNTTABLE
+ #define DFS_FD_MAX 16
+ #define RT_USING_DFS_V1
+ #define DFS_FILESYSTEMS_MAX 4
+ #define DFS_FILESYSTEM_TYPES_MAX 4
++#define RT_USING_DFS_ELMFAT
++
++/* elm-chan's FatFs, Generic FAT Filesystem Module */
++
++#define RT_DFS_ELM_CODE_PAGE 437
++#define RT_DFS_ELM_WORD_ACCESS
++#define RT_DFS_ELM_USE_LFN_3
++#define RT_DFS_ELM_USE_LFN 3
++#define RT_DFS_ELM_LFN_UNICODE_0
++#define RT_DFS_ELM_LFN_UNICODE 0
++#define RT_DFS_ELM_MAX_LFN 255
++#define RT_DFS_ELM_DRIVES 2
++#define RT_DFS_ELM_MAX_SECTOR_SIZE 512
++#define RT_DFS_ELM_REENTRANT
++#define RT_DFS_ELM_MUTEX_TIMEOUT 3000
++/* end of elm-chan's FatFs, Generic FAT Filesystem Module */
+ #define RT_USING_DFS_DEVFS
+ /* end of DFS: device virtual file system */
++#define RT_USING_FAL
++#define FAL_USING_DEBUG
++#define FAL_PART_HAS_TABLE_CFG
+ 
+ /* Device Drivers */
+ 
+@@ -154,10 +174,43 @@
+ #define RT_UNAMED_PIPE_NUMBER 64
+ #define RT_USING_SERIAL
+ #define RT_USING_SERIAL_V1
++#define RT_SERIAL_USING_DMA
+ #define RT_SERIAL_RB_BUFSZ 64
++#define RT_USING_CAN
++#define RT_CANMSG_BOX_SZ 16
++#define RT_CANSND_BOX_NUM 1
++#define RT_CANSND_MSG_TIMEOUT 100
++#define RT_CAN_NB_TX_FIFO_SIZE 256
+ #define RT_USING_I2C
+ #define RT_USING_I2C_BITOPS
++#define RT_USING_ADC
++#define RT_USING_DAC
++#define RT_USING_MTD_NOR
++#define RT_USING_RTC
++#define RT_USING_SDIO
++#define RT_SDIO_STACK_SIZE 1024
++#define RT_SDIO_THREAD_PRIORITY 15
++#define RT_MMCSD_STACK_SIZE 4096
++#define RT_MMCSD_THREAD_PRIORITY 22
++#define RT_MMCSD_MAX_PARTITION 16
++#define RT_USING_SPI
++#define RT_USING_BLK
++
++/* Partition Types */
++
++#define RT_BLK_PARTITION_DFS
++#define RT_BLK_PARTITION_EFI
++/* end of Partition Types */
+ #define RT_USING_PIN
++#define RT_USING_CHERRYUSB
++#define RT_CHERRYUSB_DEVICE
++#define RT_CHERRYUSB_DEVICE_SPEED_FS
++#define RT_CHERRYUSB_DEVICE_DWC2_GD
++#define RT_CHERRYUSB_DEVICE_CDC_ACM
++#define RT_CHERRYUSB_DEVICE_CDC_ACM_CHARDEV
++#define CONFIG_USBDEV_REQUEST_BUFFER_LEN 512
++#define CONFIG_USBDEV_MSC_MAX_BUFSIZE 512
++#define RT_CHERRYUSB_DEVICE_TEMPLATE_CDC_ACM_CHARDEV
+ /* end of Device Drivers */
+ 
+ /* C/C++ and POSIX layer */
+@@ -187,6 +240,58 @@
+ 
+ /* Network */
+ 
++#define RT_USING_NETDEV
++#define NETDEV_USING_IFCONFIG
++#define NETDEV_USING_PING
++#define NETDEV_USING_NETSTAT
++#define NETDEV_USING_AUTO_DEFAULT
++#define NETDEV_USING_LINK_STATUS_CALLBACK
++#define NETDEV_IPV4 1
++#define NETDEV_IPV6 0
++#define RT_USING_LWIP
++#define RT_USING_LWIP203
++#define RT_USING_LWIP_VER_NUM 0x20003
++#define RT_LWIP_MEM_ALIGNMENT 4
++#define RT_LWIP_IGMP
++#define RT_LWIP_ICMP
++#define RT_LWIP_DNS
++#define RT_LWIP_DHCP
++#define IP_SOF_BROADCAST 1
++#define IP_SOF_BROADCAST_RECV 1
++
++/* Static IPv4 Address */
++
++#define RT_LWIP_IPADDR "192.168.1.30"
++#define RT_LWIP_GWADDR "192.168.1.1"
++#define RT_LWIP_MSKADDR "255.255.255.0"
++/* end of Static IPv4 Address */
++#define RT_LWIP_UDP
++#define RT_LWIP_TCP
++#define RT_LWIP_RAW
++#define RT_MEMP_NUM_NETCONN 8
++#define RT_LWIP_PBUF_NUM 16
++#define RT_LWIP_RAW_PCB_NUM 4
++#define RT_LWIP_UDP_PCB_NUM 4
++#define RT_LWIP_TCP_PCB_NUM 4
++#define RT_LWIP_TCP_SEG_NUM 40
++#define RT_LWIP_TCP_SND_BUF 8196
++#define RT_LWIP_TCP_WND 8196
++#define RT_LWIP_TCPTHREAD_PRIORITY 10
++#define RT_LWIP_TCPTHREAD_MBOX_SIZE 8
++#define RT_LWIP_TCPTHREAD_STACKSIZE 1024
++#define RT_LWIP_ETHTHREAD_PRIORITY 12
++#define RT_LWIP_ETHTHREAD_STACKSIZE 1024
++#define RT_LWIP_ETHTHREAD_MBOX_SIZE 8
++#define LWIP_NETIF_STATUS_CALLBACK 1
++#define LWIP_NETIF_LINK_CALLBACK 1
++#define RT_LWIP_NETIF_NAMESIZE 6
++#define SO_REUSE 1
++#define LWIP_SO_RCVTIMEO 1
++#define LWIP_SO_SNDTIMEO 1
++#define LWIP_SO_RCVBUF 1
++#define LWIP_SO_LINGER 0
++#define LWIP_NETIF_LOOPBACK 0
++#define RT_LWIP_USING_PING
+ /* end of Network */
+ 
+ /* Memory protection */
+@@ -195,6 +300,10 @@
+ 
+ /* Utilities */
+ 
++#define RT_USING_UTEST
++#define UTEST_THR_STACK_SIZE 4096
++#define UTEST_THR_PRIORITY 20
++#define RT_UTEST_MAX_OPTIONS 64
+ /* end of Utilities */
+ 
+ /* Using USB legacy version */
+@@ -204,6 +313,54 @@
+ 
+ /* RT-Thread Utestcases */
+ 
++#define RT_USING_UTESTCASES
++
++/* Kernel Core */
++
++/* end of Kernel Core */
++
++/* Kernel Components */
++
++/* Drivers */
++
++
++/* IPC Test */
++
++/* end of IPC Test */
++
++/* Serial Test */
++
++/* end of Serial Test */
++
++/* SMP-Call Test */
++
++/* end of SMP-Call Test */
++/* end of Drivers */
++
++/* File System */
++
++/* end of File System */
++
++/* CPP11 */
++
++/* end of CPP11 */
++
++/* Network */
++
++/* end of Network */
++
++/* Utest Framework */
++
++/* end of Utest Framework */
++/* end of Kernel Components */
++
++/* Memory Management Subsytem Testcase */
++
++/* end of Memory Management Subsytem Testcase */
++
++/* Tmpfs Testcase */
++
++/* end of Tmpfs Testcase */
+ /* end of RT-Thread Utestcases */
+ 
+ /* RT-Thread online packages */
+@@ -286,6 +443,17 @@
+ /* Micrium: Micrium software products porting for RT-Thread */
+ 
+ /* end of Micrium: Micrium software products porting for RT-Thread */
++#define PKG_USING_LITTLEFS
++#define PKG_USING_LITTLEFS_LATEST_VERSION
++#define LFS_READ_SIZE 256
++#define LFS_PROG_SIZE 256
++#define LFS_BLOCK_SIZE 4096
++#define LFS_NO_DEBUG
++#define LFS_CACHE_SIZE 256
++#define LFS_BLOCK_CYCLES -1
++#define LFS_THREADSAFE
++#define LFS_LOOKAHEAD_MAX 128
++#define RT_DEF_LFS_DRIVERS 1
+ /* end of system packages */
+ 
+ /* peripheral libraries and drivers */
+@@ -304,6 +472,10 @@
+ 
+ /* end of Kendryte SDK */
+ 
++/* MM32 HAL & SDK Drivers */
++
++/* end of MM32 HAL & SDK Drivers */
++
+ /* WCH HAL & SDK Drivers */
+ 
+ /* end of WCH HAL & SDK Drivers */
+@@ -331,6 +503,26 @@
+ #define PKG_USING_GD32_ARM_SERIES_DRIVER
+ #define PKG_USING_GD32_ARM_SERIES_DRIVER_LATEST_VERSION
+ /* end of GD32 Drivers */
++
++/* HPMicro SDK */
++
++/* end of HPMicro SDK */
++
++/* FM33 Drivers */
++
++/* end of FM33 Drivers */
++
++/* FT32 HAL & SDK Drivers */
++
++/* end of FT32 HAL & SDK Drivers */
++
++/* NOVOSNS Drivers */
++
++/* end of NOVOSNS Drivers */
++
++/* N32 Drivers */
++
++/* end of N32 Drivers */
+ /* end of HAL & SDK Drivers */
+ 
+ /* sensors drivers */
+@@ -424,11 +616,43 @@
+ #define BSP_USING_GPIO
+ #define BSP_USING_UART
+ #define BSP_USING_UART0
++#define BSP_UART0_RX_USING_DMA
++#define BSP_USING_UART1
++#define BSP_UART1_RX_USING_DMA
++#define BSP_USING_UART2
++#define BSP_UART2_RX_USING_DMA
++#define BSP_USING_UART3
++#define BSP_UART3_RX_USING_DMA
++#define BSP_USING_I2C
++#define BSP_USING_I2C1
++#define BSP_USING_SPI
++#define BSP_USING_SPI4
++#define BSP_USING_CAN
++#define BSP_USING_CAN1
++#define BSP_CAN1_TX_PB13
++#define BSP_CAN1_RX_PB5
++#define BSP_USING_CAN2
++#define BSP_CAN2_TX_PF7
++#define BSP_CAN2_RX_PF6
++#define BSP_USING_ETH
++#define BSP_USING_ADC
++#define BSP_USING_DAC
++#define BSP_USING_SDRAM
++#define BSP_USING_OSPI
++#define BSP_USING_SDIO
++#define BSP_SDIO_AUTO_MOUNT
++#define BSP_SDIO_1BIT
++#define BSP_SDIO_REPROBE_CMD
++#define BSP_USING_RTC
++#define BSP_USING_HPDF
++#define BSP_USING_DCI_OV2640
++#define BSP_USING_USB_CDC
+ #define BSP_USING_GD_DBG
+ /* end of On-chip Peripheral Drivers */
+ 
+ /* Board extended module Drivers */
+ 
++/* end of Board extended module Drivers */
+ /* end of Hardware Drivers Config */
+ 
+ #endif
+diff --git a/bsp/gd32/arm/libraries/gd32_drivers/SConscript b/bsp/gd32/arm/libraries/gd32_drivers/SConscript
+index 5d3a2a85de..e02ee5aaf1 100644
+--- a/bsp/gd32/arm/libraries/gd32_drivers/SConscript
++++ b/bsp/gd32/arm/libraries/gd32_drivers/SConscript
+@@ -8,6 +8,10 @@ cwd = GetCurrentDir()
+ src = Split("""
+ """)
+ 
++# DMA 非cacheable 内存区（配合 link.ld 的 .dma_buffer 段 + MPU）
++if GetDepend('SOC_SERIES_GD32H7xx'):
++    src += ['drv_dma_mem.c']
++
+ # add pin drivers.
+ if GetDepend('RT_USING_PIN'):
+     src += ['drv_gpio.c']
+@@ -19,15 +23,6 @@ if GetDepend(['RT_USING_SERIAL']):
+     else:
+         src += ['drv_usart.c']
+ 
+-# add i2c hard drivers.       
+-if GetDepend(['RT_USING_I2C']):
+-    if GetDepend('BSP_USING_HARD_I2C0') or GetDepend('BSP_USING_HARD_I2C1') or GetDepend('BSP_USING_HARD_I2C2') or GetDepend('BSP_USING_HARD_I2C3') or GetDepend('BSP_USING_HARD_I2C4') or GetDepend('BSP_USING_HARD_I2C5'):
+-        src += ['drv_hard_i2c.c']
+-
+-# add spi drivers.
+-if GetDepend('RT_USING_SPI'):
+-    src += ['drv_spi.c']
+-
+ # add spi flash drivers.
+ if GetDepend('RT_USING_SFUD'):
+     src += ['drv_spi_flash.c', 'drv_spi.c']
+@@ -36,9 +31,6 @@ if GetDepend('RT_USING_SFUD'):
+ if GetDepend('RT_USING_WDT'):
+     src += ['drv_wdt.c']
+ 
+-# add rtc drivers.
+-if GetDepend('RT_USING_RTC'):
+-    src += ['drv_rtc.c']
+ 
+ # add timer drivers.
+ if GetDepend('RT_USING_HWTIMER'):
+@@ -46,24 +38,89 @@ if GetDepend('RT_USING_HWTIMER'):
+ 
+ # add adc drivers.
+ if GetDepend('RT_USING_ADC'):
+-    src += ['drv_adc.c']
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_adc_h7.c']
++    else:
++        src += ['drv_adc.c']
++        
++if GetDepend('RT_USING_DAC'):
++    src += ['drv_dac_h7.c']
+ 
+ # add sdio drivers.
+-if GetDepend('RT_USING_SDIO'):
+-    src += ['drv_sdio.c']
+-    
++if GetDepend('BSP_USING_SDIO'):
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_sdio_h7.c']
++    else:
++        src += ['drv_sdio.c']
++
+ # add pwm drivers.
+ if GetDepend('RT_USING_PWM'):
+     src += ['drv_pwm.c']
+ 
+ # add can drivers.
+ if GetDepend('RT_USING_CAN'):
+-    src += ['drv_can.c']
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_can_h7.c']
++    else:
++        src += ['drv_can.c']
+ 
++if GetDepend('BSP_USING_ETH'):
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_enet.c']
++        
+ # add sdram drivers.
+ if GetDepend('BSP_USING_SDRAM'):
+-    src += ['drv_sdram.c']
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_sdram_h7.c']
++    else:
++        src += ['drv_sdram.c']
+ 
++if GetDepend('BSP_USING_TLI'):
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_tli_h7.c']
++
++if GetDepend('BSP_USING_TOUCH'):
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_touch_h7.c']
++
++if GetDepend(['BSP_USING_I2C0']) or GetDepend(['BSP_USING_I2C1']) or GetDepend(['BSP_USING_I2C2']) or GetDepend(['BSP_USING_I2C3']):
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_i2c_h7.c']
++    else:
++        src += ['drv_i2c.c']
++
++if GetDepend('BSP_USING_RTC'):
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_rtc_h7.c']
++    else:
++        src += ['drv_rtc.c']
++
++if GetDepend(['BSP_USING_SPI0']) or GetDepend(['BSP_USING_SPI1']) or \
++    GetDepend(['BSP_USING_SPI2']) or GetDepend(['BSP_USING_SPI3']) or \
++    GetDepend(['BSP_USING_SPI4']) or GetDepend(['BSP_USING_SPI5']):
++    if GetDepend('SOC_SERIES_GD32H7xx'):
++        src += ['drv_spi_h7.c']
++    else:
++        src += ['drv_spi.c']
++
++if GetDepend(['BSP_USING_HPDF']):
++    src += ['drv_hpdf_h7.c']
++
++if GetDepend(['BSP_USING_DCI_OV2640']):
++    src += ['drv_dci_h7.c']
++
++if GetDepend(['BSP_USING_I2S1']):
++    src += ['drv_i2s_h7.c']
++
++if GetDepend(['BSP_USING_OSPI']):
++    src += ['drv_ospi_h7.c', 'gd25x512me.c']
++
++if GetDepend(['BSP_USING_OSPI']) and GetDepend(['RT_USING_FAL']):
++    src += ['drv_ospi_fal.c']
++
++if GetDepend(['BSP_USING_USB_CDC']):
++    src += ['drv_usbd_cdc.c']
++    
+ path = [cwd]
+ 
+ group = DefineGroup('Drivers', src, depend = [''], CPPPATH = path)
+diff --git a/bsp/gd32/arm/libraries/gd32_drivers/drv_can.c b/bsp/gd32/arm/libraries/gd32_drivers/drv_can.c
+index ac60157a0f..9fab08d8cc 100644
+--- a/bsp/gd32/arm/libraries/gd32_drivers/drv_can.c
++++ b/bsp/gd32/arm/libraries/gd32_drivers/drv_can.c
+@@ -58,6 +58,21 @@ static const struct gd32_baudrate_tbl can_baudrate_tbl[] =
+     {CAN20kBaud,    CAN_BT_SJW_1TQ, CAN_BT_BS1_13TQ, CAN_BT_BS2_2TQ, 200},
+     {CAN10kBaud,    CAN_BT_SJW_1TQ, CAN_BT_BS1_13TQ, CAN_BT_BS2_2TQ, 375},
+ };
++
++#elif defined(GD32H7xx) /* CAN 时钟 = APB2 = 300MHz */
++static const struct gd32_baudrate_tbl can_baudrate_tbl[] =
++{
++    {CAN1MBaud,   CAN_BT_SJW_1TQ, CAN_BT_BS1_12TQ, CAN_BT_BS2_2TQ, 20},
++    {CAN800kBaud, CAN_BT_SJW_1TQ, CAN_BT_BS1_12TQ, CAN_BT_BS2_2TQ, 25},
++    {CAN500kBaud, CAN_BT_SJW_1TQ, CAN_BT_BS1_12TQ, CAN_BT_BS2_2TQ, 40},
++    {CAN250kBaud, CAN_BT_SJW_1TQ, CAN_BT_BS1_13TQ, CAN_BT_BS2_2TQ, 75},
++    {CAN125kBaud, CAN_BT_SJW_1TQ, CAN_BT_BS1_13TQ, CAN_BT_BS2_2TQ, 150},
++    {CAN100kBaud, CAN_BT_SJW_1TQ, CAN_BT_BS1_12TQ, CAN_BT_BS2_2TQ, 200},
++    {CAN50kBaud,  CAN_BT_SJW_1TQ, CAN_BT_BS1_13TQ, CAN_BT_BS2_2TQ, 375},
++    {CAN20kBaud,  CAN_BT_SJW_1TQ, CAN_BT_BS1_13TQ, CAN_BT_BS2_2TQ, 1000},
++    /* 10k 在 300MHz 时钟下超出分频器范围，不支持 */
++};
++
+ #else
+     #error "CAN driver not implemented for selected device"
+ #endif
+@@ -83,7 +98,7 @@ static const struct gd32_can gd32_can_gpio[] =
+ #ifdef BSP_USING_CAN0
+     {
+         .can_clk = RCU_CAN0,
+-#if defined SOC_SERIES_GD32F4xx || defined SOC_SERIES_GD32F5xx
++#if defined SOC_SERIES_GD32F4xx || defined SOC_SERIES_GD32F5xx || defined SOC_SERIES_GD32H7xx
+         .alt_func_num = GPIO_AF_9,
+ #endif
+ #if defined BSP_CAN0_TX_PA12
+@@ -156,7 +171,7 @@ static void gd32_can_gpio_init(void)
+         rcu_periph_clock_enable(gd32_can_gpio[i].tx_clk);
+         rcu_periph_clock_enable(gd32_can_gpio[i].rx_clk);
+ 
+-#if defined SOC_SERIES_GD32F4xx || defined SOC_SERIES_GD32F5xx
++#if defined SOC_SERIES_GD32F4xx || defined SOC_SERIES_GD32F5xx || defined SOC_SERIES_GD32H7xx
+         gpio_af_set(PIN_GDPORT(gd32_can_gpio[i].tx_pin), gd32_can_gpio[i].alt_func_num, PIN_GDPIN(gd32_can_gpio[i].tx_pin));
+         gpio_af_set(PIN_GDPORT(gd32_can_gpio[i].rx_pin), gd32_can_gpio[i].alt_func_num, PIN_GDPIN(gd32_can_gpio[i].rx_pin));
+ 
+@@ -1013,7 +1028,9 @@ int rt_hw_can_init(void)
+     config.maxhdr = 28;
+ #endif
+ #endif
+-
++#if defined SOC_SERIES_GD32H7xx
++    rcu_can_clock_config(IDX_CAN1, RCU_CANSRC_APB2);
++#endif
+     gd32_can_gpio_init();
+ 
+     /* config default filter */
+diff --git a/bsp/gd32/arm/libraries/gd32_drivers/drv_gpio.c b/bsp/gd32/arm/libraries/gd32_drivers/drv_gpio.c
+index cb43335dea..e5ce847215 100644
+--- a/bsp/gd32/arm/libraries/gd32_drivers/drv_gpio.c
++++ b/bsp/gd32/arm/libraries/gd32_drivers/drv_gpio.c
+@@ -598,8 +598,16 @@ static rt_err_t gd32_pin_irq_enable(struct rt_device *device, rt_base_t pin, rt_
+ #endif
+ 
+         /* configure EXTI line */
++        //exti_init((exti_line_enum)(index->pin), EXTI_INTERRUPT, trigger_mode);
++        //exti_interrupt_flag_clear((exti_line_enum)(index->pin));
++
++#if defined SOC_SERIES_GD32H7xx
++        exti_init((exti_line_enum)bit2bitno(index->pin), EXTI_INTERRUPT, trigger_mode);
++        exti_interrupt_flag_clear((exti_line_enum)bit2bitno(index->pin));
++#else
+         exti_init((exti_line_enum)(index->pin), EXTI_INTERRUPT, trigger_mode);
+         exti_interrupt_flag_clear((exti_line_enum)(index->pin));
++#endif
+ 
+         rt_hw_interrupt_enable(level);
+     }
+@@ -651,11 +659,17 @@ rt_inline void pin_irq_hdr(int irqno)
+   */
+ void GD32_GPIO_EXTI_IRQHandler(rt_int8_t exti_line)
+ {
+-    if(RESET != exti_interrupt_flag_get((exti_line_enum)(1 << exti_line)))
+-    {
++#if defined SOC_SERIES_GD32H7xx
++    if(RESET != exti_interrupt_flag_get((exti_line_enum)exti_line)) {
++        pin_irq_hdr(exti_line);
++        exti_interrupt_flag_clear((exti_line_enum)exti_line);
++    }
++#else
++    if(RESET != exti_interrupt_flag_get((exti_line_enum)(1 << exti_line))) {
+         pin_irq_hdr(exti_line);
+         exti_interrupt_flag_clear((exti_line_enum)(1 << exti_line));
+     }
++#endif
+ }
+ 
+ #if defined SOC_SERIES_GD32E23x
+diff --git a/components/drivers/sdio/Kconfig b/components/drivers/sdio/Kconfig
+index b0c28869db..3b890d53bd 100644
+--- a/components/drivers/sdio/Kconfig
++++ b/components/drivers/sdio/Kconfig
+@@ -6,7 +6,7 @@ config RT_USING_SDIO
+     if RT_USING_SDIO
+         config RT_SDIO_STACK_SIZE
+             int "The stack size for sdio irq thread"
+-            default 512
++            default 1024
+ 
+         config RT_SDIO_THREAD_PRIORITY
+             int "The priority level value of sdio irq thread"
+@@ -14,7 +14,7 @@ config RT_USING_SDIO
+ 
+         config RT_MMCSD_STACK_SIZE
+             int "The stack size for mmcsd thread"
+-            default 1024
++            default 4096
+ 
+         config RT_MMCSD_THREAD_PRIORITY
+             int "The priority level value of mmcsd thread"
+diff --git a/components/drivers/sdio/dev_mmcsd_core.c b/components/drivers/sdio/dev_mmcsd_core.c
+index dad5fe09a3..140e1fa20a 100644
+--- a/components/drivers/sdio/dev_mmcsd_core.c
++++ b/components/drivers/sdio/dev_mmcsd_core.c
+@@ -19,7 +19,7 @@
+ #ifdef RT_SDIO_DEBUG
+ #define DBG_LVL               DBG_LOG
+ #else
+-#define DBG_LVL               DBG_INFO
++#define DBG_LVL               DBG_LOG
+ #endif /* RT_SDIO_DEBUG */
+ #include <rtdbg.h>
+ 
+diff --git a/components/drivers/sdio/dev_sd.c b/components/drivers/sdio/dev_sd.c
+index 22725dbe1d..506c0cf37d 100644
+--- a/components/drivers/sdio/dev_sd.c
++++ b/components/drivers/sdio/dev_sd.c
+@@ -16,7 +16,7 @@
+ #ifdef RT_SDIO_DEBUG
+ #define DBG_LVL               DBG_LOG
+ #else
+-#define DBG_LVL               DBG_INFO
++#define DBG_LVL               DBG_LOG
+ #endif /* RT_SDIO_DEBUG */
+ #include <rtdbg.h>
+ 
+diff --git a/components/drivers/serial/dev_serial.c b/components/drivers/serial/dev_serial.c
+index 3ebe3063ac..82934ca900 100644
+--- a/components/drivers/serial/dev_serial.c
++++ b/components/drivers/serial/dev_serial.c
+@@ -38,6 +38,18 @@
+ #define DBG_LVL    DBG_INFO
+ #include <rtdbg.h>
+ 
++/* DMA 接收缓冲的分配钩子（弱定义，BSP 可覆盖为非cacheable DMA 区）。
++ * 见 bsp/.../drivers/drv_dma_mem.c：把 DMA_RX 的接收 FIFO 放进 .dma_buffer。 */
++__attribute__((weak)) void *rt_serial_dma_buf_alloc(rt_size_t size)
++{
++    return rt_malloc(size);
++}
++
++__attribute__((weak)) void rt_serial_dma_buf_free(void *ptr)
++{
++    rt_free(ptr);
++}
++
+ #ifdef RT_USING_POSIX_STDIO
+ #include <dfs_file.h>
+ #include <fcntl.h>
+@@ -704,7 +716,7 @@ static rt_err_t rt_serial_open(struct rt_device *dev, rt_uint16_t oflag)
+             } else {
+                 struct rt_serial_rx_fifo* rx_fifo;
+ 
+-                rx_fifo = (struct rt_serial_rx_fifo*) rt_malloc (sizeof(struct rt_serial_rx_fifo) +
++                rx_fifo = (struct rt_serial_rx_fifo*) rt_serial_dma_buf_alloc (sizeof(struct rt_serial_rx_fifo) +
+                     serial->config.bufsz);
+                 RT_ASSERT(rx_fifo != RT_NULL);
+                 rx_fifo->buffer = (rt_uint8_t*) (rx_fifo + 1);
+@@ -836,7 +848,7 @@ static rt_err_t rt_serial_close(struct rt_device *dev)
+             rx_fifo = (struct rt_serial_rx_fifo*)serial->serial_rx;
+             RT_ASSERT(rx_fifo != RT_NULL);
+ 
+-            rt_free(rx_fifo);
++            rt_serial_dma_buf_free(rx_fifo);
+         }
+         serial->serial_rx = RT_NULL;
+ 
+diff --git a/components/drivers/usb/cherryusb/core/usbd_core.c b/components/drivers/usb/cherryusb/core/usbd_core.c
+index 66ec4dc60c..a0007ad0be 100644
+--- a/components/drivers/usb/cherryusb/core/usbd_core.c
++++ b/components/drivers/usb/cherryusb/core/usbd_core.c
+@@ -11,7 +11,7 @@
+ #define USB_EP0_STATE_IN    1
+ #define USB_EP0_STATE_OUT   2
+ #endif
+-
++  
+ #undef USB_DBG_TAG
+ #define USB_DBG_TAG "usbd_core"
+ #include "usb_log.h"
+diff --git a/components/drivers/usb/cherryusb/demo/cdc_acm_rttchardev_template.c b/components/drivers/usb/cherryusb/demo/cdc_acm_rttchardev_template.c
+index f5fec3f0ea..7171b7827c 100644
+--- a/components/drivers/usb/cherryusb/demo/cdc_acm_rttchardev_template.c
++++ b/components/drivers/usb/cherryusb/demo/cdc_acm_rttchardev_template.c
+@@ -11,8 +11,8 @@
+ #define CDC_OUT_EP 0x02
+ #define CDC_INT_EP 0x83
+ 
+-#define USBD_VID           0xFFFF
+-#define USBD_PID           0xFFFF
++#define USBD_VID           0x28E9
++#define USBD_PID           0x018A
+ #define USBD_MAX_POWER     100
+ #define USBD_LANGID_STRING 1033
+ 
+@@ -55,7 +55,7 @@ static const char *string_descriptors[] = {
+     (const char[]){ 0x09, 0x04 }, /* Langid */
+     "CherryUSB",                  /* Manufacturer */
+     "CherryUSB CDC DEMO",         /* Product */
+-    "2022123456",                 /* Serial Number */
++    "GD32H759-01",                 /* Serial Number */
+ };
+ 
+ static const uint8_t *device_descriptor_callback(uint8_t speed)
+diff --git a/components/drivers/usb/cherryusb/port/dwc2/usb_dc_dwc2.c b/components/drivers/usb/cherryusb/port/dwc2/usb_dc_dwc2.c
+index a5de3f29d7..c0359bd048 100644
+--- a/components/drivers/usb/cherryusb/port/dwc2/usb_dc_dwc2.c
++++ b/components/drivers/usb/cherryusb/port/dwc2/usb_dc_dwc2.c
+@@ -1105,16 +1105,8 @@ process_setup:
+                     USB_OTG_INEP(i)->DIEPCTL = USB_OTG_DIEPCTL_SNAK;
+                     USB_OTG_OUTEP(i)->DOEPCTL = USB_OTG_DOEPCTL_SNAK;
+                 } else {
+-                    if (USB_OTG_INEP(i)->DIEPCTL & USB_OTG_DIEPCTL_EPENA) {
+-                        USB_OTG_INEP(i)->DIEPCTL = (USB_OTG_DIEPCTL_EPDIS | USB_OTG_DIEPCTL_SNAK);
+-                    } else {
+-                        USB_OTG_INEP(i)->DIEPCTL = 0;
+-                    }
+-                    if (USB_OTG_OUTEP(i)->DOEPCTL & USB_OTG_DOEPCTL_EPENA) {
+-                        USB_OTG_OUTEP(i)->DOEPCTL = (USB_OTG_DOEPCTL_EPDIS | USB_OTG_DOEPCTL_SNAK);
+-                    } else {
+-                        USB_OTG_OUTEP(i)->DOEPCTL = 0;
+-                    }
++                   USB_OTG_INEP(i)->DIEPCTL = 0;
++                   USB_OTG_OUTEP(i)->DOEPCTL = 0;
+                 }
+                 USB_OTG_INEP(i)->DIEPTSIZ = 0U;
+                 USB_OTG_INEP(i)->DIEPINT = 0xFBFFU;
+diff --git a/components/drivers/usb/cherryusb/port/dwc2/usb_dwc2_param.h b/components/drivers/usb/cherryusb/port/dwc2/usb_dwc2_param.h
+index 74e436c225..dd23f6293b 100644
+--- a/components/drivers/usb/cherryusb/port/dwc2/usb_dwc2_param.h
++++ b/components/drivers/usb/cherryusb/port/dwc2/usb_dwc2_param.h
+@@ -359,6 +359,21 @@ static inline void dwc2_get_hwparams(uint32_t reg_base, struct dwc2_hw_params *h
+     hw->ipg_isoc_en = !!(hwcfg4 & GHWCFG4_IPG_ISOC_SUPPORTED);
+     hw->service_interval_mode = !!(hwcfg4 &
+                                    GHWCFG4_SERVICE_INTERVAL_SUPPORTED);
++
++        /* GD32 quirk: GHWCFG1~4 read as zero, hardcode for GD32H759 USBHS */
++    hw->arch                = 0;    /* SLAVE_ONLY，无 DMA */
++    hw->enable_dynamic_fifo = 1;
++    hw->host_channels       = 8;
++    hw->hs_phy_type         = 0;    /* 用内嵌 FS PHY */
++    hw->fs_phy_type         = 1;    /* dedicated FS */
++    hw->num_dev_ep          = 5;    /* EP0~EP5 共 6 个，这里填"最大端点号" */
++    hw->num_dev_in_eps      = 5;
++    hw->en_multiple_tx_fifo = 1;
++    hw->total_fifo_size     = 1024; /* 单位：32bit 字 */
++    hw->max_transfer_size   = 65535;
++    hw->max_packet_count    = 511;
++    hw->dma_desc_enable     = 0;
++    hw->utmi_phy_data_width = 0;
+ }
+ 
+ void dwc2_get_user_params(uint32_t reg_base, struct dwc2_user_params *params);
+diff --git a/components/drivers/usb/cherryusb/port/dwc2/usb_glue_gd.c b/components/drivers/usb/cherryusb/port/dwc2/usb_glue_gd.c
+index 1a23686281..8763ac9a96 100644
+--- a/components/drivers/usb/cherryusb/port/dwc2/usb_glue_gd.c
++++ b/components/drivers/usb/cherryusb/port/dwc2/usb_glue_gd.c
+@@ -7,13 +7,6 @@
+ #include "stdint.h"
+ #include "usb_dwc2_reg.h"
+ 
+-#if 1
+-#error you need to modify some usb register values then use this chip
+-#endif
+-
+-#if CONFIG_USBDEV_EP_NUM != 4 && CONFIG_USBDEV_EP_NUM != 6
+-#error "gd32 only has 4 endpoints for pa11/pa12 and 6 endpoints for pb14/pb15"
+-#endif
+ 
+ /* you can find this config in function:usb_core_init, file:drv_usb_core.c, for example:
+  *
+diff --git a/src/Kconfig b/src/Kconfig
+index ea50610b1f..13e0d39c6d 100644
+--- a/src/Kconfig
++++ b/src/Kconfig
+@@ -182,7 +182,7 @@ if RT_USING_TIMER_SOFT
+     config RT_TIMER_THREAD_STACK_SIZE
+         int "The stack size of timer thread"
+         default 2048 if ARCH_CPU_64BIT
+-        default 512
++        default 1024
+ 
+     config RT_USING_TIMER_ALL_SOFT
+         bool "Set all timer as soft timer"

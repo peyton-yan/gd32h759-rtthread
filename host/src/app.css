@@ -1,0 +1,47 @@
+:root {
+  --bg: #0f172a;
+  --panel: #16203a;
+  --line: #2a3757;
+  --fg: #e6edf7;
+  --muted: #8ea1c4;
+  --accent: #38bdf8;
+  --ok: #22c55e;
+  --bad: #ef4444;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Segoe UI", system-ui, "Microsoft YaHei", sans-serif;
+  font-size: 14px;
+}
+
+#app { padding: 16px; }
+
+button {
+  background: var(--accent);
+  color: #06202e;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:disabled { opacity: 0.5; cursor: default; }
+button.ghost { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+
+input {
+  background: #0b1220;
+  color: var(--fg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 5px 8px;
+  width: 90px;
+}
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; }

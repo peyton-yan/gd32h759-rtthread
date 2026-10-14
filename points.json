@@ -1,0 +1,840 @@
+{
+  "device": "GD32H759I-EVAL",
+  "generated_from": "applications/mb_points.c",
+  "areas": {
+    "coil": {
+      "label": "线圈",
+      "prefix": "0x",
+      "fc": [
+        1,
+        5,
+        15
+      ],
+      "points": [
+        {
+          "name": "LED1",
+          "addr": 0,
+          "addr_hex": "0x0000",
+          "ref": 1,
+          "type": "bit",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LED2",
+          "addr": 1,
+          "addr_hex": "0x0001",
+          "ref": 2,
+          "type": "bit",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOG_ENABLE",
+          "addr": 1792,
+          "addr_hex": "0x0700",
+          "ref": 1793,
+          "type": "bit",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_ENABLE",
+          "addr": 3328,
+          "addr_hex": "0x0D00",
+          "ref": 3329,
+          "type": "bit",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        }
+      ]
+    },
+    "discrete_input": {
+      "label": "离散输入",
+      "prefix": "1x",
+      "fc": [
+        2
+      ],
+      "points": [
+        {
+          "name": "KEY_WAKEUP",
+          "addr": 0,
+          "addr_hex": "0x0000",
+          "ref": 10001,
+          "type": "bit",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "KEY_TAMPER",
+          "addr": 1,
+          "addr_hex": "0x0001",
+          "ref": 10002,
+          "type": "bit",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "KEY_USER",
+          "addr": 2,
+          "addr_hex": "0x0002",
+          "ref": 10003,
+          "type": "bit",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "SD_MOUNTED",
+          "addr": 1792,
+          "addr_hex": "0x0700",
+          "ref": 11793,
+          "type": "bit",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "TOUCH_PRESSED",
+          "addr": 2304,
+          "addr_hex": "0x0900",
+          "ref": 12305,
+          "type": "bit",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": false
+        },
+        {
+          "name": "USB_CDC_READY",
+          "addr": 2816,
+          "addr_hex": "0x0B00",
+          "ref": 12817,
+          "type": "bit",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "ENET_LINK_UP",
+          "addr": 3072,
+          "addr_hex": "0x0C00",
+          "ref": 13073,
+          "type": "bit",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        }
+      ]
+    },
+    "input_register": {
+      "label": "输入寄存器",
+      "prefix": "3x",
+      "fc": [
+        4
+      ],
+      "points": [
+        {
+          "name": "SYS_MODEL",
+          "addr": 0,
+          "addr_hex": "0x0000",
+          "ref": 30001,
+          "type": "u16",
+          "attr": "r",
+          "bind": "reg",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "SYS_FW_VER",
+          "addr": 1,
+          "addr_hex": "0x0001",
+          "ref": 30002,
+          "type": "u16",
+          "attr": "r",
+          "bind": "reg",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "SYS_UPTIME_S",
+          "addr": 2,
+          "addr_hex": "0x0002",
+          "ref": 30003,
+          "type": "u32",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "ADC_CH0",
+          "addr": 512,
+          "addr_hex": "0x0200",
+          "ref": 30513,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "ADC_CH1",
+          "addr": 513,
+          "addr_hex": "0x0201",
+          "ref": 30514,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "ADC_CH2",
+          "addr": 514,
+          "addr_hex": "0x0202",
+          "ref": 30515,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "ADC_CH3",
+          "addr": 515,
+          "addr_hex": "0x0203",
+          "ref": 30516,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "DAC_CH1_VAL",
+          "addr": 768,
+          "addr_hex": "0x0300",
+          "ref": 30769,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_YEAR",
+          "addr": 1024,
+          "addr_hex": "0x0400",
+          "ref": 31025,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_MON",
+          "addr": 1025,
+          "addr_hex": "0x0401",
+          "ref": 31026,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_DAY",
+          "addr": 1026,
+          "addr_hex": "0x0402",
+          "ref": 31027,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_HOUR",
+          "addr": 1027,
+          "addr_hex": "0x0403",
+          "ref": 31028,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_MIN",
+          "addr": 1028,
+          "addr_hex": "0x0404",
+          "ref": 31029,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_SEC",
+          "addr": 1029,
+          "addr_hex": "0x0405",
+          "ref": 31030,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "EEP_RDATA",
+          "addr": 1280,
+          "addr_hex": "0x0500",
+          "ref": 31281,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "FLASH_MAGIC_OK",
+          "addr": 1536,
+          "addr_hex": "0x0600",
+          "ref": 31537,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOG_LINES",
+          "addr": 1792,
+          "addr_hex": "0x0700",
+          "ref": 31793,
+          "type": "u32",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_RX_CNT",
+          "addr": 2048,
+          "addr_hex": "0x0800",
+          "ref": 32049,
+          "type": "u32",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_LAST_ID",
+          "addr": 2050,
+          "addr_hex": "0x0802",
+          "ref": 32051,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_LAST_DLC",
+          "addr": 2051,
+          "addr_hex": "0x0803",
+          "ref": 32052,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "TOUCH_X",
+          "addr": 2304,
+          "addr_hex": "0x0900",
+          "ref": 32305,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": false
+        },
+        {
+          "name": "TOUCH_Y",
+          "addr": 2305,
+          "addr_hex": "0x0901",
+          "ref": 32306,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": false
+        },
+        {
+          "name": "MIC_LEFT",
+          "addr": 2560,
+          "addr_hex": "0x0A00",
+          "ref": 32561,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "MIC_RIGHT",
+          "addr": 2561,
+          "addr_hex": "0x0A01",
+          "ref": 32562,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "ENET_IP",
+          "addr": 3072,
+          "addr_hex": "0x0C00",
+          "ref": 33073,
+          "type": "u32",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_EN",
+          "addr": 3328,
+          "addr_hex": "0x0D00",
+          "ref": 33329,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_SP",
+          "addr": 3329,
+          "addr_hex": "0x0D01",
+          "ref": 33330,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_FEEDBACK",
+          "addr": 3330,
+          "addr_hex": "0x0D02",
+          "ref": 33331,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_OUTPUT",
+          "addr": 3331,
+          "addr_hex": "0x0D03",
+          "ref": 33332,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_ERROR",
+          "addr": 3332,
+          "addr_hex": "0x0D04",
+          "ref": 33333,
+          "type": "s16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_ALARM",
+          "addr": 3333,
+          "addr_hex": "0x0D05",
+          "ref": 33334,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_SCAN_US",
+          "addr": 3334,
+          "addr_hex": "0x0D06",
+          "ref": 33335,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_JITTER_US",
+          "addr": 3335,
+          "addr_hex": "0x0D07",
+          "ref": 33336,
+          "type": "u16",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_ITERS",
+          "addr": 3336,
+          "addr_hex": "0x0D08",
+          "ref": 33337,
+          "type": "u32",
+          "attr": "r",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        }
+      ]
+    },
+    "holding_register": {
+      "label": "保持寄存器",
+      "prefix": "4x",
+      "fc": [
+        3,
+        6,
+        16
+      ],
+      "points": [
+        {
+          "name": "DAC_CH1_SET",
+          "addr": 768,
+          "addr_hex": "0x0300",
+          "ref": 40769,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_YEAR_SET",
+          "addr": 1024,
+          "addr_hex": "0x0400",
+          "ref": 41025,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_MON_SET",
+          "addr": 1025,
+          "addr_hex": "0x0401",
+          "ref": 41026,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_DAY_SET",
+          "addr": 1026,
+          "addr_hex": "0x0402",
+          "ref": 41027,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_HOUR_SET",
+          "addr": 1027,
+          "addr_hex": "0x0403",
+          "ref": 41028,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_MIN_SET",
+          "addr": 1028,
+          "addr_hex": "0x0404",
+          "ref": 41029,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "RTC_SEC_SET",
+          "addr": 1029,
+          "addr_hex": "0x0405",
+          "ref": 41030,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "EEP_ADDR",
+          "addr": 1280,
+          "addr_hex": "0x0500",
+          "ref": 41281,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "EEP_WDATA",
+          "addr": 1281,
+          "addr_hex": "0x0501",
+          "ref": 41282,
+          "type": "u16",
+          "attr": "w",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "FLASH_PARAM",
+          "addr": 1536,
+          "addr_hex": "0x0600",
+          "ref": 41537,
+          "type": "u32",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOG_PERIOD_MS",
+          "addr": 1792,
+          "addr_hex": "0x0700",
+          "ref": 41793,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_TX_ID",
+          "addr": 2048,
+          "addr_hex": "0x0800",
+          "ref": 42049,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_TX_DLC",
+          "addr": 2049,
+          "addr_hex": "0x0801",
+          "ref": 42050,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_TX_DATA0",
+          "addr": 2050,
+          "addr_hex": "0x0802",
+          "ref": 42051,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_TX_DATA1",
+          "addr": 2051,
+          "addr_hex": "0x0803",
+          "ref": 42052,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_TX_DATA2",
+          "addr": 2052,
+          "addr_hex": "0x0804",
+          "ref": 42053,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_TX_DATA3",
+          "addr": 2053,
+          "addr_hex": "0x0805",
+          "ref": 42054,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "CAN_TX_TRIG",
+          "addr": 2054,
+          "addr_hex": "0x0806",
+          "ref": 42055,
+          "type": "u16",
+          "attr": "w",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_SETPOINT",
+          "addr": 3328,
+          "addr_hex": "0x0D00",
+          "ref": 43329,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_KP",
+          "addr": 3329,
+          "addr_hex": "0x0D01",
+          "ref": 43330,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_KI",
+          "addr": 3330,
+          "addr_hex": "0x0D02",
+          "ref": 43331,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_KD",
+          "addr": 3331,
+          "addr_hex": "0x0D03",
+          "ref": 43332,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_PERIOD_MS",
+          "addr": 3332,
+          "addr_hex": "0x0D04",
+          "ref": 43333,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_SAFE_OUT",
+          "addr": 3333,
+          "addr_hex": "0x0D05",
+          "ref": 43334,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_FB_LO",
+          "addr": 3334,
+          "addr_hex": "0x0D06",
+          "ref": 43335,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_FB_HI",
+          "addr": 3335,
+          "addr_hex": "0x0D07",
+          "ref": 43336,
+          "type": "u16",
+          "attr": "rw",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        },
+        {
+          "name": "LOOP_RESET",
+          "addr": 3336,
+          "addr_hex": "0x0D08",
+          "ref": 43337,
+          "type": "u16",
+          "attr": "w",
+          "bind": "hook",
+          "impl": true,
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "total": 72,
+  "enabled_total": 69
+}

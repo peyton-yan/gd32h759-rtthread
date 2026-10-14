@@ -1,0 +1,23 @@
+{
+  "name": "gd32-scada",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "GD32H759 + RT-Thread 工控上位机",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "sync-points": "node scripts/sync-points.mjs",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.0.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@tauri-apps/cli": "^2.0.0",
+    "svelte": "^4.2.19",
+    "vite": "^5.4.0"
+  }
+}

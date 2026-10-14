@@ -1,0 +1,670 @@
+diff --git a/GD32H7xx/GD32H7xx_standard_peripheral/Include/gd32h7xx_hpdf.h b/GD32H7xx/GD32H7xx_standard_peripheral/Include/gd32h7xx_hpdf.h
+index cb4e8c2..2fe8543 100644
+--- a/GD32H7xx/GD32H7xx_standard_peripheral/Include/gd32h7xx_hpdf.h
++++ b/GD32H7xx/GD32H7xx_standard_peripheral/Include/gd32h7xx_hpdf.h
+@@ -2,11 +2,11 @@
+     \file    gd32h7xx_hpdf.h
+     \brief   definitions for the HPDF
+ 
+-    \version 2024-01-05, V1.2.0, firmware for GD32H7xx
++    \version 2025-01-24, V1.4.0, firmware for GD32H7xx
+ */
+ 
+ /*
+-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
++    Copyright (c) 2025, GigaDevice Semiconductor Inc.
+ 
+     Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+@@ -538,7 +538,7 @@ typedef enum {
+ #define TMCHEN_CHANNEL7                 TMCHEN(0x80)                                    /*!< threshold monitor is enabled on channel 7 */
+ 
+ /* threshold monitor high threshold event break signal definitions */
+-#define HTBSD(regval)                   (BITS(0,1) & ((uint32_t)(regval)<< 1))          /*!< select high threshold event break signal */
++#define HTBSD(regval)                   (BITS(0,3) & ((uint32_t)(regval)<< 0))          /*!< select high threshold event break signal */
+ #define NO_TM_HT_BREAK                  HTBSD(0)                                        /*!< break signal is not distributed to an threshold monitor high threshold event */
+ #define TM_HT_BREAK0                    HTBSD(1)                                        /*!< break signal 0 is distributed to an threshold monitor high threshold event */
+ #define TM_HT_BREAK1                    HTBSD(2)                                        /*!< break signal 1 is distributed to an threshold monitor high threshold event */
+@@ -546,7 +546,7 @@ typedef enum {
+ #define TM_HT_BREAK3                    HTBSD(8)                                        /*!< break signal 3 is distributed to an threshold monitor high threshold event */
+ 
+ /* threshold monitor low threshold event break signal definitions */
+-#define LTBSD(regval)                   (BITS(0,1) & ((uint32_t)(regval)<< 1))          /*!< select low threshold event break signal */
++#define LTBSD(regval)                   (BITS(0,3) & ((uint32_t)(regval)<< 0))          /*!< select low threshold event break signal */
+ #define NO_TM_LT_BREAK                  LTBSD(0)                                        /*!< break signal is not distributed to an threshold monitor low threshold event */
+ #define TM_LT_BREAK0                    LTBSD(1)                                        /*!< break signal 0 is distributed to an threshold monitor low threshold event */
+ #define TM_LT_BREAK1                    LTBSD(2)                                        /*!< break signal 1 is distributed to an threshold monitor low threshold event */
+@@ -757,4 +757,4 @@ FlagStatus hpdf_interrupt_flag_get(hpdf_filter_enum filtery, hpdf_interrput_flag
+ /* clear the HPDF interrupt flags */
+ void hpdf_interrupt_flag_clear(hpdf_filter_enum filtery, hpdf_interrput_flag_enum int_flag);
+ 
+-#endif /* GD32H7XX_HPDF_H */
++#endif /* GD32H7XX_HPDF_H */
+\ No newline at end of file
+diff --git a/GD32H7xx/GD32H7xx_standard_peripheral/Source/gd32h7xx_hpdf.c b/GD32H7xx/GD32H7xx_standard_peripheral/Source/gd32h7xx_hpdf.c
+index 6638052..e858d76 100644
+--- a/GD32H7xx/GD32H7xx_standard_peripheral/Source/gd32h7xx_hpdf.c
++++ b/GD32H7xx/GD32H7xx_standard_peripheral/Source/gd32h7xx_hpdf.c
+@@ -2,11 +2,11 @@
+     \file    gd32h7xx_hpdf.c
+     \brief   HPDF driver
+ 
+-    \version 2024-01-05, V1.2.0, firmware for GD32H7xx
++    \version 2025-01-24, V1.4.0, firmware for GD32H7xx
+ */
+ 
+ /*
+-    Copyright (c) 2024, GigaDevice Semiconductor Inc.
++    Copyright (c) 2025, GigaDevice Semiconductor Inc.
+ 
+     Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+@@ -50,8 +50,7 @@ OF SUCH DAMAGE.
+ #define FLTYCT_CTCNT_OFFSET                 ((uint32_t)0x00000004U)               /*!< bit offset of CTCNT in FLTYCT */
+ #define SIGN_BIT_OFFSET                     ((uint32_t)0x00800000U)               /*!< bit offset of signed value */
+ 
+-#define HPDF_WRONG_HANDLE        while(1)
+-{}
++#define HPDF_WRONG_HANDLE        while(1){}
+ 
+ /*!
+     \brief      reset HPDF
+@@ -69,8 +68,8 @@ void hpdf_deinit(void)
+ /*!
+     \brief      initialize the parameters of HPDF channel struct with the default values
+     \param[in]  init_struct: the initialization data needed to initialize HPDF
+-                  serial_interface: EXTERNAL_CKIN, INTERNAL_CKOUT, HALF_CKOUT_FALLING_EDGE, HALF_CKOUT_RISING_EDGE
+-                  spi_ck_source: SPI_RISING_EDGE, SPI_FALLING_EDGE, MANCHESTER_CODE0, MANCHESTER_CODE1
++                  spi_ck_source: EXTERNAL_CKIN, INTERNAL_CKOUT, HALF_CKOUT_FALLING_EDGE, HALF_CKOUT_RISING_EDGE
++                  serial_interface: SPI_RISING_EDGE, SPI_FALLING_EDGE, MANCHESTER_CODE0, MANCHESTER_CODE1
+                   malfunction_monitor: MM_DISABLE, MM_ENABLE
+                   calibration_offset: calibration offset(-8388608 ~ 8388607)
+                   right_bit_shift: data right bit-shift(0 ~ 31)
+@@ -89,8 +88,7 @@ void hpdf_deinit(void)
+ void hpdf_channel_struct_para_init(hpdf_channel_parameter_struct *init_struct)
+ {
+     /* check whether the struct is empty */
+-    if(NULL == init_struct)
+-    {
++    if(NULL == init_struct) {
+         HPDF_WRONG_HANDLE
+     }
+     /* set the struct with the default values */
+@@ -129,8 +127,7 @@ void hpdf_channel_struct_para_init(hpdf_channel_parameter_struct *init_struct)
+ void hpdf_filter_struct_para_init(hpdf_filter_parameter_struct *init_struct)
+ {
+     /* check whether the struct is empty */
+-    if(NULL == init_struct)
+-    {
++    if(NULL == init_struct) {
+         HPDF_WRONG_HANDLE
+     }
+     /* set the struct with the default values */
+@@ -155,8 +152,7 @@ void hpdf_filter_struct_para_init(hpdf_filter_parameter_struct *init_struct)
+ void hpdf_rc_struct_para_init(hpdf_rc_parameter_struct *init_struct)
+ {
+     /* check whether the struct is empty */
+-    if(NULL == init_struct)
+-    {
++    if(NULL == init_struct) {
+         HPDF_WRONG_HANDLE
+     }
+     /* set the struct with the default values */
+@@ -176,8 +172,7 @@ void hpdf_rc_struct_para_init(hpdf_rc_parameter_struct *init_struct)
+ void hpdf_ic_struct_para_init(hpdf_ic_parameter_struct *init_struct)
+ {
+     /* check whether the struct is empty */
+-    if(NULL == init_struct)
+-    {
++    if(NULL == init_struct) {
+         HPDF_WRONG_HANDLE
+     }
+     /* set the struct with the default values */
+@@ -217,8 +212,8 @@ void hpdf_disable(void)
+     \brief      initialize the HPDF channel
+     \param[in]  channelx: CHANNELx(x=0..7)
+     \param[in]  init_struct: the initialization data needed to initialize HPDF channel
+-                  serial_interface: EXTERNAL_CKIN, INTERNAL_CKOUT, HALF_CKOUT_FALLING_EDGE, HALF_CKOUT_RISING_EDGE
+-                  spi_ck_source: SPI_RISING_EDGE, SPI_FALLING_EDGE, MANCHESTER_CODE0, MANCHESTER_CODE1
++                  spi_ck_source: EXTERNAL_CKIN, INTERNAL_CKOUT, HALF_CKOUT_FALLING_EDGE, HALF_CKOUT_RISING_EDGE
++                  serial_interface: SPI_RISING_EDGE, SPI_FALLING_EDGE, MANCHESTER_CODE0, MANCHESTER_CODE1
+                   malfunction_monitor: MM_DISABLE, MM_ENABLE
+                   calibration_offset: calibration offset(-8388608 ~ 8388607)
+                   right_bit_shift: data right bit-shift(0 ~ 31)
+@@ -338,7 +333,7 @@ void hpdf_rc_init(hpdf_filter_enum filtery, hpdf_rc_parameter_struct *init_struc
+                   icdmaen: ICDMAEN_DISABLE, ICDMAEN_ENABLE
+                   ic_channel_group: ICGSEL_CHANNELx(x=0..7)
+                   icsyn: ICSYN_DISABLE, ICSYN_ENABLE
+-                  trigger_dege: TRG_DISABLE, RISING_EDGE_TRG, FALLING_EDGE_TRG, EDGE_TRG
++                  trigger_edge: TRG_DISABLE, RISING_EDGE_TRG, FALLING_EDGE_TRG, EDGE_TRG
+                   trigger_signal: HPDF_ITRGx(x=0..8), HPDF_ITRG11, HPDF_ITRG12, HPDF_ITRG24, HPDF_ITRG25, HPDF_ITRG31
+     \param[out] none
+     \retval     none
+@@ -410,8 +405,7 @@ void hpdf_clock_output_source_config(uint32_t source)
+ void hpdf_clock_output_duty_mode_disable(void)
+ {
+     /* make sure the HPDF_CH0CTL_HPDFEN=0 */
+-    if(RESET == (HPDF_CHXCTL(CHANNEL0) & HPDF_CH0CTL_HPDFEN))
+-    {
++    if(RESET == (HPDF_CHXCTL(CHANNEL0) & HPDF_CH0CTL_HPDFEN)) {
+         HPDF_CHXCTL(CHANNEL0) &= ~CKOUTDM_ENABLE;
+     }
+ }
+@@ -425,8 +419,7 @@ void hpdf_clock_output_duty_mode_disable(void)
+ void hpdf_clock_output_duty_mode_enable(void)
+ {
+     /* make sure the HPDF_CH0CTL_HPDFEN=0 */
+-    if(RESET == (HPDF_CHXCTL(CHANNEL0) & HPDF_CH0CTL_HPDFEN))
+-    {
++    if(RESET == (HPDF_CHXCTL(CHANNEL0) & HPDF_CH0CTL_HPDFEN)) {
+         HPDF_CHXCTL(CHANNEL0) |= CKOUTDM_ENABLE;
+     }
+ }
+@@ -441,8 +434,7 @@ void hpdf_clock_output_divider_config(uint8_t divider)
+ {
+     uint32_t reg;
+     /* make sure the HPDF_CH0CTL_HPDFEN=0 */
+-    if(RESET == (HPDF_CHXCTL(CHANNEL0) & HPDF_CH0CTL_HPDFEN))
+-    {
++    if(RESET == (HPDF_CHXCTL(CHANNEL0) & HPDF_CH0CTL_HPDFEN)) {
+         reg = HPDF_CHXCTL(CHANNEL0);
+         reg &= ~HPDF_CH0CTL_CKOUTDIV;
+         reg |= ((uint32_t)divider << CH0CTL_CKOUTDIV_OFFSET);
+@@ -489,8 +481,7 @@ void hpdf_spi_clock_source_config(hpdf_channel_enum channelx, uint32_t clock_sou
+     uint32_t reg;
+     reg = HPDF_CHXCTL(channelx);
+     /* make sure the CHEN=0 */
+-    if(RESET == (reg & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (reg & HPDF_CHXCTL_CHEN)) {
+         reg &= ~HPDF_CHXCTL_SPICKSS;
+         reg |= clock_source;
+         HPDF_CHXCTL(channelx) = reg;
+@@ -514,8 +505,7 @@ void hpdf_serial_interface_type_config(hpdf_channel_enum channelx, uint32_t type
+     uint32_t reg;
+     reg = HPDF_CHXCTL(channelx);
+     /* make sure the CHEN=0 */
+-    if(RESET == (reg & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (reg & HPDF_CHXCTL_CHEN)) {
+         reg &= ~HPDF_CHXCTL_SITYP;
+         reg |= type;
+         HPDF_CHXCTL(channelx) = reg;
+@@ -575,8 +565,7 @@ void hpdf_clock_loss_enable(hpdf_channel_enum channelx)
+ void hpdf_channel_pin_redirection_disable(hpdf_channel_enum channelx)
+ {
+     /* make sure the CHEN=0 */
+-    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN)) {
+         HPDF_CHXCTL(channelx) &= ~HPDF_CHXCTL_CHPINSEL;
+     }
+ }
+@@ -590,8 +579,7 @@ void hpdf_channel_pin_redirection_disable(hpdf_channel_enum channelx)
+ void hpdf_channel_pin_redirection_enable(hpdf_channel_enum channelx)
+ {
+     /* make sure the CHEN=0 */
+-    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN)) {
+         HPDF_CHXCTL(channelx) |= HPDF_CHXCTL_CHPINSEL;
+     }
+ }
+@@ -612,8 +600,7 @@ void hpdf_channel_multiplexer_config(hpdf_channel_enum channelx, uint32_t data_s
+     uint32_t reg;
+     reg = HPDF_CHXCTL(channelx);
+     /* make sure the CHEN=0 */
+-    if(RESET == (reg & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (reg & HPDF_CHXCTL_CHEN)) {
+         reg &= ~HPDF_CHXCTL_CMSD;
+         /* configure the input data source */
+         reg |= data_source;
+@@ -637,8 +624,7 @@ void hpdf_data_pack_mode_config(hpdf_channel_enum channelx, uint32_t mode)
+     uint32_t reg;
+     reg = HPDF_CHXCTL(channelx);
+     /* make sure the CHEN=0 */
+-    if(RESET == (reg & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (reg & HPDF_CHXCTL_CHEN)) {
+         reg &= ~HPDF_CHXCTL_DPM;
+         /* configure the data packing mode */
+         reg |= mode;
+@@ -657,8 +643,7 @@ void hpdf_data_right_bit_shift_config(hpdf_channel_enum channelx, uint8_t right_
+ {
+     uint32_t reg;
+     /* make sure the CHEN=0 */
+-    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN)) {
+         reg = HPDF_CHXCFG0(channelx);
+         reg &= ~HPDF_CHXCFG0_DTRS;
+         /* configure the right shift */
+@@ -734,11 +719,9 @@ void hpdf_malfunction_counter_config(hpdf_channel_enum channelx, uint8_t thresho
+ void hpdf_write_parallel_data_standard_mode(hpdf_channel_enum channelx, int16_t data)
+ {
+     /* make sure HPDF channel is used receive parallel data */
+-    if(INTERNAL_INPUT == (HPDF_CHXCTL(channelx) & INTERNAL_INPUT))
+-    {
++    if(INTERNAL_INPUT == (HPDF_CHXCTL(channelx) & INTERNAL_INPUT)) {
+         /* make sure the data pack of HPDF_CHXPDI register is standard mode */
+-        if(DPM_STANDARD_MODE == (HPDF_CHXCTL(channelx) & DPM_STANDARD_MODE))
+-        {
++        if(DPM_STANDARD_MODE == (HPDF_CHXCTL(channelx) & DPM_STANDARD_MODE)) {
+             HPDF_CHXPDI(channelx) = (uint16_t)data;
+         }
+     }
+@@ -754,11 +737,9 @@ void hpdf_write_parallel_data_standard_mode(hpdf_channel_enum channelx, int16_t
+ void hpdf_write_parallel_data_interleaved_mode(hpdf_channel_enum channelx, int32_t data)
+ {
+     /* make sure HPDF channel is used receive parallel data */
+-    if(INTERNAL_INPUT == (HPDF_CHXCTL(channelx) & INTERNAL_INPUT))
+-    {
++    if(INTERNAL_INPUT == (HPDF_CHXCTL(channelx) & INTERNAL_INPUT)) {
+         /* make sure the data pack of HPDF_CH0PDI register is interleaved mode */
+-        if(DPM_INTERLEAVED_MODE == (HPDF_CHXCTL(channelx) & DPM_INTERLEAVED_MODE))
+-        {
++        if(DPM_INTERLEAVED_MODE == (HPDF_CHXCTL(channelx) & DPM_INTERLEAVED_MODE)) {
+             HPDF_CHXPDI(channelx) = (uint32_t)data;
+         }
+     }
+@@ -774,11 +755,9 @@ void hpdf_write_parallel_data_interleaved_mode(hpdf_channel_enum channelx, int32
+ void hpdf_write_parallel_data_dual_mode(hpdf_channel_enum channelx, int32_t data)
+ {
+     /* make sure HPDF channel is used receive parallel data */
+-    if(INTERNAL_INPUT == (HPDF_CHXCTL(channelx) & INTERNAL_INPUT))
+-    {
++    if(INTERNAL_INPUT == (HPDF_CHXCTL(channelx) & INTERNAL_INPUT)) {
+         /* make sure the data pack of HPDF_CH0PDI register is dual mode */
+-        if(DPM_DUAL_MODE == (HPDF_CHXCTL(channelx) & DPM_DUAL_MODE))
+-        {
++        if(DPM_DUAL_MODE == (HPDF_CHXCTL(channelx) & DPM_DUAL_MODE)) {
+             HPDF_CHXPDI(channelx) = (uint32_t)data;
+         }
+     }
+@@ -852,8 +831,7 @@ void hpdf_filter_config(hpdf_filter_enum filtery, uint32_t order, uint16_t overs
+ {
+     uint32_t reg;
+     /* make sure the FLTEN=0 */
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         reg = HPDF_FLTYSFCFG(filtery);
+         reg &= ~(HPDF_FLTYSFCFG_SFO | HPDF_FLTYSFCFG_SFOR);
+         /* configure the sinc filter order and oversample */
+@@ -873,8 +851,7 @@ void hpdf_integrator_oversample(hpdf_filter_enum filtery, uint16_t oversample)
+ {
+     uint32_t reg;
+     /* make sure the FLTEN=0 */
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         reg = HPDF_FLTYSFCFG(filtery);
+         reg &= ~HPDF_FLTYSFCFG_IOR;
+         /* configure the integrator oversampling rate */
+@@ -900,8 +877,7 @@ void hpdf_threshold_monitor_filter_config(hpdf_channel_enum channelx, uint32_t o
+ {
+     uint32_t reg;
+     /* make sure the CHEN=0 */
+-    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN))
+-    {
++    if(RESET == (HPDF_CHXCTL(channelx) & HPDF_CHXCTL_CHEN)) {
+         reg = HPDF_CHXCFG1(channelx);
+         reg &= ~(HPDF_CHXCFG1_TMSFO | HPDF_CHXCFG1_TMFOR);
+         /* configure the threshold monitor filter order and oversample rate */
+@@ -1071,8 +1047,7 @@ int32_t hpdf_extremes_monitor_maximum_get(hpdf_filter_enum filtery)
+     /* get the maximum value */
+     val = HPDF_FLTYEMMAX(filtery) >> FLTYEMMAX_MAXVAL_OFFSET;
+     /* get the sign of value */
+-    if(val & SIGN_BIT_OFFSET)
+-    {
++    if(val & SIGN_BIT_OFFSET) {
+         val |= 0xFF000000U;
+     }
+     return (int32_t)val;
+@@ -1090,8 +1065,7 @@ int32_t hpdf_extremes_monitor_minimum_get(hpdf_filter_enum filtery)
+     /* get the channel of maximum value */
+     val = HPDF_FLTYEMMIN(filtery) >> FLTYEMMIN_MINVAL_OFFSET;
+     /* get the sign of vlaue */
+-    if(val & SIGN_BIT_OFFSET)
+-    {
++    if(val & SIGN_BIT_OFFSET) {
+         val |= 0xFF000000U;
+     }
+     return (int32_t)val;
+@@ -1152,8 +1126,7 @@ void hpdf_rc_start_by_software(hpdf_filter_enum filtery)
+ */
+ void hpdf_rc_syn_disable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) &= ~HPDF_FLTYCTL0_RCSYN;
+     }
+ }
+@@ -1166,8 +1139,7 @@ void hpdf_rc_syn_disable(hpdf_filter_enum filtery)
+ */
+ void hpdf_rc_syn_enable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) |= HPDF_FLTYCTL0_RCSYN;
+     }
+ }
+@@ -1180,8 +1152,7 @@ void hpdf_rc_syn_enable(hpdf_filter_enum filtery)
+ */
+ void hpdf_rc_dma_disable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) &= ~HPDF_FLTYCTL0_RCDMAEN;
+     }
+ }
+@@ -1194,8 +1165,7 @@ void hpdf_rc_dma_disable(hpdf_filter_enum filtery)
+ */
+ void hpdf_rc_dma_enable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) |= HPDF_FLTYCTL0_RCDMAEN;
+     }
+ }
+@@ -1226,8 +1196,7 @@ void hpdf_rc_channel_config(hpdf_filter_enum filtery, uint32_t channel)
+ */
+ void hpdf_rc_fast_mode_disable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) &= ~HPDF_FLTYCTL0_FAST;
+     }
+ }
+@@ -1240,8 +1209,7 @@ void hpdf_rc_fast_mode_disable(hpdf_filter_enum filtery)
+ */
+ void hpdf_rc_fast_mode_enable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) |= HPDF_FLTYCTL0_FAST;
+     }
+ }
+@@ -1258,8 +1226,7 @@ int32_t hpdf_rc_data_get(hpdf_filter_enum filtery)
+     /* get the signed data */
+     val = HPDF_FLTYRDATA(filtery) >> FLTYRDATAT_RDATA_OFFSET;
+     /* get the sign of vlaue */
+-    if(val & SIGN_BIT_OFFSET)
+-    {
++    if(val & SIGN_BIT_OFFSET) {
+         val |= 0xFF000000U;
+     }
+     return (int32_t)val;
+@@ -1298,8 +1265,7 @@ void hpdf_ic_start_by_software(hpdf_filter_enum filtery)
+ */
+ void hpdf_ic_syn_disable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) &= ~HPDF_FLTYCTL0_ICSYN;
+     }
+ }
+@@ -1312,8 +1278,7 @@ void hpdf_ic_syn_disable(hpdf_filter_enum filtery)
+ */
+ void hpdf_ic_syn_enable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) |= HPDF_FLTYCTL0_ICSYN;
+     }
+ }
+@@ -1326,8 +1291,7 @@ void hpdf_ic_syn_enable(hpdf_filter_enum filtery)
+ */
+ void hpdf_ic_dma_disable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) &= ~HPDF_FLTYCTL0_ICDMAEN;
+     }
+ }
+@@ -1340,8 +1304,7 @@ void hpdf_ic_dma_disable(hpdf_filter_enum filtery)
+ */
+ void hpdf_ic_dma_enable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) |= HPDF_FLTYCTL0_ICDMAEN;
+     }
+ }
+@@ -1354,8 +1317,7 @@ void hpdf_ic_dma_enable(hpdf_filter_enum filtery)
+ */
+ void hpdf_ic_scan_mode_disable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) &= ~HPDF_FLTYCTL0_SCMOD;
+     }
+ }
+@@ -1368,8 +1330,7 @@ void hpdf_ic_scan_mode_disable(hpdf_filter_enum filtery)
+ */
+ void hpdf_ic_scan_mode_enable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) |= HPDF_FLTYCTL0_SCMOD;
+     }
+ }
+@@ -1382,8 +1343,7 @@ void hpdf_ic_scan_mode_enable(hpdf_filter_enum filtery)
+ */
+ void hpdf_ic_trigger_signal_disable(hpdf_filter_enum filtery)
+ {
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         HPDF_FLTYCTL0(filtery) &= ~HPDF_FLTYCTL0_ICTEEN;
+     }
+ }
+@@ -1420,8 +1380,7 @@ void hpdf_ic_trigger_signal_config(hpdf_filter_enum filtery, uint32_t trigger, u
+ {
+     uint32_t reg;
+     /* make sure the FLTEN=0 */
+-    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN))
+-    {
++    if(RESET == (HPDF_FLTYCTL0(filtery) & HPDF_FLTYCTL0_FLTEN)) {
+         reg = HPDF_FLTYCTL0(filtery);
+         reg &= ~(HPDF_FLTYCTL0_ICTEEN | HPDF_FLTYCTL0_ICTSSEL);
+         /* configure inserted conversions trigger siganl and trigger edge */
+@@ -1460,8 +1419,7 @@ int32_t hpdf_ic_data_get(hpdf_filter_enum filtery)
+     /* get the unsigned data  */
+     val = HPDF_FLTYIDATA(filtery) >> FLTYIDATAT_IDATA_OFFSET;
+     /* get the sign of value */
+-    if(val & SIGN_BIT_OFFSET)
+-    {
++    if(val & SIGN_BIT_OFFSET) {
+         val |= 0xFF000000U;
+     }
+     /* get the signed data */
+@@ -1505,12 +1463,10 @@ uint8_t hpdf_ic_channel_get(hpdf_filter_enum filtery)
+ FlagStatus hpdf_flag_get(hpdf_filter_enum filtery, hpdf_flag_enum flag)
+ {
+     FlagStatus flag_state = RESET;
+-    switch(filtery)
+-    {
++    switch(filtery) {
+     case FLT0:
+         /* get the flag in FLT0 register */
+-        if(RESET != (HPDF_REG_VAL(HPDF_FLT0, flag) & BIT(HPDF_BIT_POS(flag))))
+-        {
++        if(RESET != (HPDF_REG_VAL(HPDF_FLT0, flag) & BIT(HPDF_BIT_POS(flag)))) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1518,8 +1474,7 @@ FlagStatus hpdf_flag_get(hpdf_filter_enum filtery, hpdf_flag_enum flag)
+         break;
+     case FLT1:
+         /* get the flag in FLT1 register */
+-        if(RESET != (HPDF_REG_VAL(HPDF_FLT1, flag) & BIT(HPDF_BIT_POS(flag))))
+-        {
++        if(RESET != (HPDF_REG_VAL(HPDF_FLT1, flag) & BIT(HPDF_BIT_POS(flag)))) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1527,8 +1482,7 @@ FlagStatus hpdf_flag_get(hpdf_filter_enum filtery, hpdf_flag_enum flag)
+         break;
+     case FLT2:
+         /* get the flag in FLT2 register */
+-        if(RESET != (HPDF_REG_VAL(HPDF_FLT2, flag) & BIT(HPDF_BIT_POS(flag))))
+-        {
++        if(RESET != (HPDF_REG_VAL(HPDF_FLT2, flag) & BIT(HPDF_BIT_POS(flag)))) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1536,8 +1490,7 @@ FlagStatus hpdf_flag_get(hpdf_filter_enum filtery, hpdf_flag_enum flag)
+         break;
+     case FLT3:
+         /* get the flag in FLT3 register */
+-        if(RESET != (HPDF_REG_VAL(HPDF_FLT3, flag) & BIT(HPDF_BIT_POS(flag))))
+-        {
++        if(RESET != (HPDF_REG_VAL(HPDF_FLT3, flag) & BIT(HPDF_BIT_POS(flag)))) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1568,13 +1521,11 @@ FlagStatus hpdf_flag_get(hpdf_filter_enum filtery, hpdf_flag_enum flag)
+ */
+ void hpdf_flag_clear(hpdf_filter_enum filtery, hpdf_flag_enum flag)
+ {
+-    if(FLTYTMSTAT_REG_OFFSET == ((uint32_t)flag >> 6))
+-    {
++    if(FLTYTMSTAT_REG_OFFSET == ((uint32_t)flag >> 6)) {
+         /* clear threshold monitor high threshold flag */
+         HPDF_FLTYTMFC(filtery) |= BIT(HPDF_BIT_POS(flag));
+     } else {
+-        switch(flag)
+-        {
++        switch(flag) {
+         case HPDF_FLAG_FLTY_ICEF:
+             /* read the inserted conversion data */
+             HPDF_FLTYIDATA(filtery);
+@@ -1611,8 +1562,7 @@ void hpdf_flag_clear(hpdf_filter_enum filtery, hpdf_flag_enum flag)
+ */
+ void hpdf_interrupt_enable(hpdf_filter_enum filtery, hpdf_interrput_enum interrupt)
+ {
+-    switch(filtery)
+-    {
++    switch(filtery) {
+     case FLT0:
+         HPDF_REG_VAL(HPDF_FLT0, interrupt) |= BIT(HPDF_BIT_POS(interrupt));
+         break;
+@@ -1647,8 +1597,7 @@ void hpdf_interrupt_enable(hpdf_filter_enum filtery, hpdf_interrput_enum interru
+ */
+ void hpdf_interrupt_disable(hpdf_filter_enum filtery, hpdf_interrput_enum interrupt)
+ {
+-    switch(filtery)
+-    {
++    switch(filtery) {
+     case FLT0:
+         HPDF_REG_VAL(HPDF_FLT0, interrupt) &= ~BIT(HPDF_BIT_POS(interrupt));
+         break;
+@@ -1685,15 +1634,13 @@ FlagStatus hpdf_interrupt_flag_get(hpdf_filter_enum filtery, hpdf_interrput_flag
+ {
+     FlagStatus flag_state = RESET;
+     uint32_t int_enable = 0U, flags = 0U;
+-    switch(filtery)
+-    {
++    switch(filtery) {
+     case FLT0:
+         /* get the interrupt enable bit status */
+         int_enable = (HPDF_REG_VAL(HPDF_FLT0, int_flag) & BIT(HPDF_BIT_POS(int_flag)));
+         /* get the interrupt enable bit status */
+         flags = (HPDF_REG_VAL2(HPDF_FLT0, int_flag) & BIT(HPDF_BIT_POS2(int_flag)));
+-        if(flags && int_enable)
+-        {
++        if(flags && int_enable) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1704,8 +1651,7 @@ FlagStatus hpdf_interrupt_flag_get(hpdf_filter_enum filtery, hpdf_interrput_flag
+         int_enable = (HPDF_REG_VAL(HPDF_FLT1, int_flag) & BIT(HPDF_BIT_POS(int_flag)));
+         /* get the interrupt enable bit status */
+         flags = (HPDF_REG_VAL2(HPDF_FLT1, int_flag) & BIT(HPDF_BIT_POS2(int_flag)));
+-        if(flags && int_enable)
+-        {
++        if(flags && int_enable) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1716,8 +1662,7 @@ FlagStatus hpdf_interrupt_flag_get(hpdf_filter_enum filtery, hpdf_interrput_flag
+         int_enable = (HPDF_REG_VAL(HPDF_FLT2, int_flag) & BIT(HPDF_BIT_POS(int_flag)));
+         /* get the interrupt enable bit status */
+         flags = (HPDF_REG_VAL2(HPDF_FLT2, int_flag) & BIT(HPDF_BIT_POS2(int_flag)));
+-        if(flags && int_enable)
+-        {
++        if(flags && int_enable) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1728,8 +1673,7 @@ FlagStatus hpdf_interrupt_flag_get(hpdf_filter_enum filtery, hpdf_interrput_flag
+         int_enable = (HPDF_REG_VAL(HPDF_FLT3, int_flag) & BIT(HPDF_BIT_POS(int_flag)));
+         /* get the interrupt enable bit status */
+         flags = (HPDF_REG_VAL2(HPDF_FLT3, int_flag) & BIT(HPDF_BIT_POS2(int_flag)));
+-        if(flags && int_enable)
+-        {
++        if(flags && int_enable) {
+             flag_state = SET;
+         } else {
+             flag_state = RESET;
+@@ -1758,8 +1702,7 @@ FlagStatus hpdf_interrupt_flag_get(hpdf_filter_enum filtery, hpdf_interrput_flag
+ */
+ void hpdf_interrupt_flag_clear(hpdf_filter_enum filtery, hpdf_interrput_flag_enum int_flag)
+ {
+-    switch(int_flag)
+-    {
++    switch(int_flag) {
+     case HPDF_INT_FLAG_FLTY_ICEF:
+         /* read the inserted conversion data */
+         HPDF_FLTYIDATA(filtery);
+@@ -1776,4 +1719,4 @@ void hpdf_interrupt_flag_clear(hpdf_filter_enum filtery, hpdf_interrput_flag_enu
+         HPDF_FLTYINTC(filtery) |= BIT(HPDF_BIT_POS2(int_flag));
+         break;
+     }
+-}
++}
+\ No newline at end of file
+diff --git a/GD32H7xx/SConscript b/GD32H7xx/SConscript
+index e3aa400..68a8d81 100644
+--- a/GD32H7xx/SConscript
++++ b/GD32H7xx/SConscript
+@@ -14,6 +14,9 @@ GD32H7xx_standard_peripheral/Source/gd32h7xx_misc.c
+ GD32H7xx_standard_peripheral/Source/gd32h7xx_syscfg.c
+ GD32H7xx_standard_peripheral/Source/gd32h7xx_pmu.c
+ GD32H7xx_standard_peripheral/Source/gd32h7xx_dma.c
++GD32H7xx_standard_peripheral/Source/gd32h7xx_dci.c
++GD32H7xx_standard_peripheral/Source/gd32h7xx_ospi.c
++GD32H7xx_standard_peripheral/Source/gd32h7xx_ospim.c
+ ''')
+ 
+ if GetDepend(['RT_USING_SERIAL']):
+@@ -56,7 +59,14 @@ if GetDepend(['BSP_USING_SDRAM']):
+ if GetDepend(['BSP_USING_TLI']):
+     src += ['GD32H7xx_standard_peripheral/Source/gd32h7xx_tli.c']
+     src += ['GD32H7xx_standard_peripheral/Source/gd32h7xx_ipa.c']
+-
++if GetDepend(['RT_USING_HWTIMER']) or GetDepend(['RT_USING_ADC']) or GetDepend(['RT_USING_DAC']):
++    src += ['GD32H7xx_standard_peripheral/Source/gd32h7xx_timer.c']
++
++if GetDepend(['RT_USING_ADC']) or GetDepend(['RT_USING_DAC']):
++    src += ['GD32H7xx_standard_peripheral/Source/gd32h7xx_trigsel.c']
++    
++if GetDepend(['BSP_USING_HPDF']):
++    src += ['GD32H7xx_standard_peripheral/Source/gd32h7xx_hpdf.c']    
+ path = [cwd + '/GD32H7xx_standard_peripheral/Include']
+ 
+ CPPDEFINES = ['USE_STDPERIPH_DRIVER']
